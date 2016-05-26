@@ -11,8 +11,8 @@
 - name: Ensure vagrant user is in admin group.
   user: "name={{ vagrant_user }} append=yes groups=admin"
 
-- name: Ensure vml user is in admin group.
-  user: "name={{ vml_username }} append=yes groups=admin"
+- name: Ensure ssh user is in admin group.
+  user: "name={{ ssh_username }} append=yes groups=admin"
 
 - name: Ensure www-data user is in dialout group (Debian).
   user: "name=www-data append=yes groups=dialout"

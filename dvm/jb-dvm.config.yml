@@ -34,21 +34,21 @@ env_aliases:
 #    alias_uri: "dev.projecturl.com"
 #    alias_root: "{{ alias_rootpath }}"
 #    alias_host: "dev.ip.address"
-#    alias_user: "{{ vml_username }}"
+#    alias_user: "{{ ssh_username }}"
 #    alias_files: "{{ alias_filespath }}"
 #
 #  - alias_name: "stage"
 #    alias_uri: "stage.projecturl.com"
 #    alias_root: "{{ alias_rootpath }}"
 #    alias_host: "stage.ip.address"
-#    alias_user: "{{ vml_username }}"
+#    alias_user: "{{ ssh_username }}"
 #    alias_files: "{{ alias_filespath }}"
 #
 #  - alias_name: "prod"
 #    alias_uri: "projecturl.com"
 #    alias_root: "{{ alias_rootpath }}"
 #    alias_host: "prod.ip.address"
-#    alias_user: "{{ vml_username }}"
+#    alias_user: "{{ ssh_username }}"
 #    alias_files: "{{ alias_filespath }}"
 
 # Allow Drupal VM to be accessed via a public network interface on your host.
