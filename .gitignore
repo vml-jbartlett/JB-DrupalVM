@@ -5,7 +5,3 @@
 ._*
 .vagrant/
 *.box
-scripts/README.md
-scripts/post/
-scripts/pre/
-solr/

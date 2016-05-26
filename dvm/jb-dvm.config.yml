@@ -7,9 +7,10 @@ vagrant_synced_folder_default_type: nfs
 
 # If you need to run multiple instances of Drupal VM, set a unique hostname,
 # machine name, and IP address for each instance.
+project_name: Project Name
 production_url: projecturl.com
 vagrant_hostname: "local.{{ production_url }}"
-vagrant_machine_name: project_name
+vagrant_machine_name: {{ project_name | lowercase }}
 vagrant_ip: 0.0.0.0 #Set a default or leave at 0 for autoselection
 
 vagrant_local_path: "~/Sites/{{ production_url }}"
@@ -18,7 +19,7 @@ config_dir: dvm
 # Setup for VML alias files
 alias_local: "local"
 alias_filespath: "/sites/default/files"
-alias_rootpath: "set/to/external/rootpath"
+alias_rootpath: "set/to/remote/rootpath"
 
 env_aliases:
   - alias_name: "local"
@@ -107,7 +108,7 @@ install_site: false
 drupal_major_version: 7
 drupal_core_path: "/var/www/{{ production_url }}/docroot"
 drupal_domain: "{{ vagrant_hostname }}"
-drupal_site_name: "Passport"
+drupal_site_name: "{{ project_name }}"
 drupal_install_profile: standard
 drupal_enable_modules: [ 'devel' ]
 drupal_account_name: admin

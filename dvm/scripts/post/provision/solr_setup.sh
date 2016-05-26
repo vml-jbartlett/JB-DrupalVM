@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
 # Set up Drupal SOLR
+PROJECT_URL=production_url
 SOLR=/opt/solr/example
-SOLRCONF=/var/www/passport.vml.com/htdocs/sites/all/modules/contrib/search_api_solr/solr-conf
-NEWCONF=solr/neoport.vml.com/conf
+SOLRCONF=/var/www/$PROJECT_URL/htdocs/sites/all/modules/contrib/search_api_solr/solr-conf
+NEWCONF=solr/$PROJECT_URL/conf
 EXTCONF=/var/solr_files
 
 cd $SOLR

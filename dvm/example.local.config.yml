@@ -1,6 +1,0 @@
----
-# Update your VML username (usually first initial/last name: i.e., 'jcook')
-vml_username: notjcook
-
-# Update if Passport is installed in a directory other than the default "~/Sites/passport.vml.com"
-vagrant_local_path: "~/Sites/{{ production_url }}"

@@ -1,0 +1,6 @@
+---
+# Update your SSH username
+ssh_username: "ssh_user"
+
+# Update if site is installed in a directory other than the default "~/Sites/{{ production_url }}"
+vagrant_local_path: "~/Sites/{{ production_url }}"

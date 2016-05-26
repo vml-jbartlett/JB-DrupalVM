@@ -13,4 +13,4 @@ ENV['DRUPALVM_CONFIG_DIR'] = "dvm"
 # ENV['DRUPALVM_DIR'] = "vendor/geerlingguy/drupal-vm"
 
 # Load the real Vagrantfile
-load "#{__dir__}/#{ENV['DRUPALVM_CONFIG_DIR']}/Vagrantfile"
+load "#{__dir__}/#{ENV['DRUPALVM_CONFIG_DIR']}/Vagrantfile.jb-dvm"

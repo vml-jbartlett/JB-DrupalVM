@@ -30,7 +30,7 @@ The basic tools needed to install this box are:
 
 3. Copy the example.local.config.yml and save as local.config.yml: `cp dvm/example.local.config.yml dvm/local.config.yml`
 
-4. Edit the local.config.yml and update your **vml_username** (If your local isn't installed at ~/Sites/%production_url%, you will need to update these references as well.): `vi dvm/local.config.yml`
+4. Edit the local.config.yml and update your **ssh_username** (If your local isn't installed at ~/Sites/%production_url%, you will need to update these references as well.): `vi dvm/local.config.yml`
 
 5. Install the following Vagrant plugins: 
 ```bash
@@ -56,6 +56,7 @@ For instruction on how to get a recent copy of %project_name%'s database, see th
 If vagrant throws an error on `vagrant up`: 
 
 * Try updating your Vagrant box: `vagrant box update` and run `vagrant up --provision`.
+* Run `vagrant box list` to see if the "%vagrant_box%" exists. If it does, remove it with `vagrant box remove %vagrant_box%` then run `vagrant up` again.
 
 If you get an "**ECDSA host key**" error, check your "known_host" file `sudo vi ~/.ssh/known_hosts` for instances of "%vagrant_hostname%" - most likely at the bottom of the file. Remove the line and save the file. Then, run `vagrant up` again.
 
@@ -80,7 +81,7 @@ Images and other files are updated automatically on your local through the [Stag
 
 ### Database updating
 
-A recent version of the %project_name% DB is include within the current vagrant box at "%vagrant_box%." If your site launches without a database, run `vagrant reload --provision` to update your local repo to the most recent version.
+A recent version of the %project_name% DB is include within the current vagrant box at "%custom_vagrant_box%." If your site launches without a database, run `vagrant reload --provision` to update your local repo to the most recent version.
 
 To update your data to what is currently available on Production, download a recent backup by logging into the %project_name% Prod site and go to [Backup and Migrate](https://%production_url%/admin/config/system/backup_migrate).
 From here, you can either generate a new backup or download a recent file from the "Saved backups" tab. (You will need Admin access to %project_name% in order to do this.)
