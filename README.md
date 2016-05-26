@@ -71,7 +71,7 @@ The site install should have added Drush aliases for the available %project_name
 * **@%project_name%.stage** - For the staging site at [https://%stage.alias_uri%](https://%stage.alias_uri%)
 * **@%project_name%.prod** -  For the production site at [https://%production_url%](https://%production_url%). While this alias is set to work with the prod site, the alias is not currently usable as proxy access is not currently available for this server.
 
-To use these, cd into the /htdocs folder (core Drupal file): `cd ~/Sites/%production_url%/htdocs` (or from anywhere if Drush is installed globally on your machine.) 
+To use these, cd into the (core Drupal file): `cd %drupal_core_path%` (or from anywhere if Drush is installed globally on your machine.) 
 and run your Drush commands, e.g., `drush @%project_name%.local status` .
 
 ### Image and file syncing
