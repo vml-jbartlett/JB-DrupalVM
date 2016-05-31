@@ -10,7 +10,7 @@ vagrant_synced_folder_default_type: nfs
 project_name: Project Name
 production_url: projecturl.com
 vagrant_hostname: "local.{{ production_url }}"
-vagrant_machine_name: {{ project_name | lowercase }}
+vagrant_machine_name: project_name
 vagrant_ip: 0.0.0.0 #Set a default or leave at 0 for autoselection
 
 vagrant_local_path: "~/Sites/{{ production_url }}"
@@ -338,6 +338,7 @@ composer_home_group: "{{ drupalvm_user }}"
 pre_provision_scripts: []
 post_provision_scripts: []
   # - "../scripts/post/provision/pub_key.sh"
+  # - "../scripts/post/provision/db_init.sh"
   # - "../scripts/post/provision/db_restore.sh"
   # - "../scripts/post/provision/solr_setup.sh"
 
