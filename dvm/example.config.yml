@@ -337,10 +337,8 @@ composer_home_group: "{{ drupalvm_user }}"
 # the `provisioning/playbook.yml` file.
 pre_provision_scripts: []
 post_provision_scripts: []
-  # - "../scripts/post/provision/pub_key.sh"
-  # - "../scripts/post/provision/db_init.sh"
-  # - "../scripts/post/provision/db_restore.sh"
   # - "../scripts/post/provision/solr_setup.sh"
+  # - "../scripts/post/provision/db_init.sh"
 
 # MySQL Configuration.
 mysql_root_password: root

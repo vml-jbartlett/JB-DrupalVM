@@ -12,12 +12,13 @@ Vagrantfile.local
 examples/prod/inventory
 examples/prod/bootstrap/vars.yml
 #scripts/
-roles/
+provisioning/roles
 
 db_backups/*
 box/*
 keys/*
 #keys/public/*
-solr/*
+solr/conf/*
+solr/data
 
 !README.md

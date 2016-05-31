@@ -1,22 +1,31 @@
-#!/bin/bash bash
+#!/bin/bash
 
-# Install database from backup directory
+# Define a timestamp function
+timestamp() {
+  date +"%c"
+}
 
-# DBBK=~/Sites/passport.vml.com/dvm/db_backups/
-DBBK=/var/db_backups/
-cd $DBBK
+# Initial database from backup directory
 
-PROJECT_NAME=passport
-FILE=($PROJECT_NAME*.mysql.gz)
+DBBK=/var/db_backups
+PROJECT_NAME=project_name
+FILE=(*.mysql.gz)
 
-if [ -e "$FILE" ]; then
-    drush @$PROJECT_NAME.local sql-drop
+if [ ! -e ~/.db_init ]; then
+  cd $DBBK
+  if [ -e $DBBK/$FILE ]; then
+    drush @$PROJECT_NAME.local sql-drop -y
     drush @$PROJECT_NAME.local sql-cli < $DBBK/$FILE
     drush @$PROJECT_NAME.local fra -y
-    drush @$PROJECT_NAME.local updb
-    echo "SQL restored from backup.\n"
+    drush @$PROJECT_NAME.local updb -y
+    touch ~/.db_init
+    echo "$(timestamp): SQL restored from backup." >> ~/.db_init
     cd
+  else
+    touch ~/.db_init
+    echo "$(timestamp): No SQL backups were detected." >> ~/.db_init
+    cd
+  fi
 else
-  cd
-  echo "No SQL backups were detected.\n"
+  echo "$(timestamp): DB Init has already been run." >> ~/.db_init
 fi
