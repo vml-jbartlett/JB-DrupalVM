@@ -1,17 +1,30 @@
 <?php
 
 /**
- * Drupal VM drush aliases.
+ * {{ drupal_site_name }} drush aliases.
  *
  * @see example.aliases.drushrc.php.
  */
 
 {% macro alias(host, root) %}
+
 {%- if root not in _devtool_docroots %}
-$aliases['{{ host }}'] = array(
-  'uri' => '{{ host }}',
-  'root' => '{{ root }}',
+{%- for item in env_aliases %}
+// Drush alias for @{{ vagrant_machine_name }}.{{ item.alias_name }}
+$aliases['{{ item.alias_name }}'] = array(
+    'uri' => '{{ item.alias_uri }}',
+    'root' => '{{ item.alias_root }}',
+    {% if item.alias_uri != vagrant_hostname %}
+    'remote-host' => '{{ item.alias_host }}',
+    'remote-user' => '{{ item.alias_user }}',
+    'path-aliases' => array(
+        '%dump-dir' => '{{ item.alias_root }}{{ item.alias_files }}/drush.dbdumps',
+        '%files' => '{{ item.alias_root }}{{ item.alias_files }}',
+    ),
+    {% endif %}
 );
+
+{% endfor -%}
 
 {% endif -%}
 {% endmacro %}

@@ -45,6 +45,8 @@ if File.exist?("#{host_config_dir}/local.config.yml")
   vconfig.merge!(YAML.load_file("#{host_config_dir}/local.config.yml"))
 end
 
+mach = vconfig['vagrant_machine_name']
+
 # Replace jinja variables in config.
 vconfig = walk(vconfig) do |value|
   while value.is_a?(String) && value.match(/{{ .* }}/)
@@ -121,7 +123,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Provisioning. Use ansible if it's installed, JJG-Ansible-Windows if not.
   if which('ansible-playbook')
     config.vm.provision 'ansible' do |ansible|
-      ansible.playbook = "#{host_drupalvm_dir}/provisioning/playbook.yml"
+      if File.exist?("#{host_drupalvm_dir}/provisioning/#{mach}.playbook.yml")
+        ansible.playbook = "#{host_drupalvm_dir}/provisioning/#{mach}.playbook.yml"
+      else
+        ansible.playbook = "#{host_drupalvm_dir}/provisioning/playbook.yml"
+      end
       ansible.galaxy_role_file = "#{host_drupalvm_dir}/provisioning/requirements.yml"
       ansible.extra_vars = {
         config_dir: host_config_dir
@@ -130,7 +136,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   else
     config.vm.provision 'shell' do |sh|
       sh.path = "#{host_drupalvm_dir}/provisioning/JJG-Ansible-Windows/windows.sh"
-      sh.args = "-e 'config_dir=\"#{guest_config_dir}\"' #{guest_drupalvm_dir}/provisioning/playbook.yml"
+      if File.exist?("#{guest_config_dir}/provisioning/#{mach}.playbook.yml")
+        sh.args = "-e 'config_dir=\"#{guest_config_dir}\"' #{guest_drupalvm_dir}/provisioning/#{mach}.playbook.yml"
+      else
+        sh.args = "-e 'config_dir=\"#{guest_config_dir}\"' #{guest_drupalvm_dir}/provisioning/playbook.yml"
+      end
     end
   end
   # ansible_local provisioner is broken in Vagrant < 1.8.2.
