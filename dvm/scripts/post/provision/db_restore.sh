@@ -1,13 +1,12 @@
-#!/usr/bin/env bash
+#!/bin/bash bash
 
 # Install database from backup directory
-DBBK=/var/db_backups/
-cd $DBBK
+DBBK=/var/db_backups
 
 PROJECT_NAME=project_name
-FILE=($PROJECT_NAME*.mysql.gz)
+FILE=(*.mysql.gz)
 
-while [ -e "$FILE" ]; do
+while [ -e $DBBK/$FILE ]; do
     read -p "I see you have a backup in the db_backups folder. Would you like to restore your database from it? (y/n)" yn
     case $yn in
         [Yy]* ) drush @$PROJECT_NAME.local sql-drop; drush @$PROJECT_NAME.local sql-cli < $DBBK/$FILE; drush @$PROJECT_NAME.local fra -y; break;;
@@ -17,4 +16,3 @@ while [ -e "$FILE" ]; do
 done
 
 drush @$PROJECT_NAME.local updb;
-cd

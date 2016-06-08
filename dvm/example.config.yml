@@ -308,7 +308,7 @@ xhprof_download_folder_name: xhprof-master
 php_memory_limit: "512M"
 php_display_errors: "On"
 php_display_startup_errors: "On"
-php_realpath_cache_size: "16K"
+php_realpath_cache_size: "2048k"
 php_sendmail_path: "/usr/sbin/sendmail -t -i"
 php_opcache_enabled_in_ini: true
 php_opcache_memory_consumption: "2048"
@@ -336,9 +336,9 @@ composer_home_group: "{{ drupalvm_user }}"
 # Run specified scripts before or after VM is provisioned. Path is relative to
 # the `provisioning/playbook.yml` file.
 pre_provision_scripts: []
-post_provision_scripts: []
-  # - "../scripts/post/provision/solr_setup.sh"
-  # - "../scripts/post/provision/db_init.sh"
+post_provision_scripts:
+  - "../scripts/post/provision/solr_setup.sh"
+  - "../scripts/post/provision/db_init.sh"
 
 # MySQL Configuration.
 mysql_root_password: root
