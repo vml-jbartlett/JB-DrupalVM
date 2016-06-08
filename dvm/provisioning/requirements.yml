@@ -34,9 +34,9 @@
 - src: geerlingguy.nginx
   version: 1.9.2
 - src: geerlingguy.nodejs
-  version: 3.0.0
+  version: 3.1.0
 - src: geerlingguy.php
-  version: 3.0.4
+  version: 3.1.0
 - src: geerlingguy.php-memcached
   version: 2.0.0
 - src: geerlingguy.php-mysql
@@ -62,6 +62,6 @@
 - src: geerlingguy.security
   version: 1.2.0
 - src: geerlingguy.solr
-  version: 2.1.0
+  version: 3.1.0
 - src: geerlingguy.varnish
-  version: 1.6.0
+  version: 1.6.1

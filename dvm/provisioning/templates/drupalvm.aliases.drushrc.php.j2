@@ -7,7 +7,6 @@
  */
 
 {% macro alias(host, root) %}
-
 {%- if root not in _devtool_docroots %}
 {%- for item in env_aliases %}
 // Drush alias for @{{ vagrant_machine_name }}.{{ item.alias_name }}
