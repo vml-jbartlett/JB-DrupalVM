@@ -1,15 +1,16 @@
 #!/bin/bash
 
+#Set these variables
+PROJECT_URL=projecturl.com
+PROJECT_NAME=project_name
+
 # Define a timestamp function
 timestamp() {
   date +"%c"
 }
 
 # Set up Drupal SOLR
-PROJECT_URL=projecturl.com
-PROJECT_NAME=project_name
 WRITE_FILE=/home/vagrant/.solr_setup
-
 SOLR=/var/solr/$PROJECT_NAME
 MODULE_CONF=/var/www/$PROJECT_URL/htdocs/sites/all/modules/contrib/search_api_solr/solr-conf
 DVMCONF=/var/solr_files
@@ -26,5 +27,6 @@ if [ ! -e $WRITE_FILE ]; then
     echo "$(timestamp): No cores were detected in the dvm/solr/conf folder." >> $WRITE_FILE
   fi
 else
+  sudo service solr restart
   echo "$(timestamp): SOLR setup has already been run." >> $WRITE_FILE
 fi

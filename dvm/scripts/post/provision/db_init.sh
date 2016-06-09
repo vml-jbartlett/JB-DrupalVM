@@ -1,14 +1,15 @@
 #!/bin/bash
 
+#Set this variable
+PROJECT_NAME=project_name
+
 # Define a timestamp function
 timestamp() {
   date +"%c"
 }
 
 # Initial database from backup directory
-
 DBBK=/var/db_backups
-PROJECT_NAME=project_name
 FILE=(*.mysql.gz)
 WRITE_FILE=/home/vagrant/.db_init
 

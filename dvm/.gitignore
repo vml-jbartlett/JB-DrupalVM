@@ -8,7 +8,7 @@ vagrant_ansible_inventory_default
 local.config.yml
 #config.yml
 drupal.make.yml
-Vagrantfile.local
+#Vagrantfile.local
 examples/prod/inventory
 examples/prod/bootstrap/vars.yml
 #scripts/
@@ -18,9 +18,8 @@ drupal/
 provisioning/roles
 
 db_backups/*
-keys/*
-#keys/public/*
-solr/conf/*
+#keys/*
+#solr/conf/*
 solr/data
 
 !README.md

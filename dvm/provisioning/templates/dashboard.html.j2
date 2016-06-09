@@ -42,7 +42,7 @@
           <td><a href="https://{{ servername }}" target="_blank">{{ servername }}</a></td>
           <td><code>{{ docroot }}</code></td>
         {% if configure_drush_aliases %}
-          <td><code>drush @{{ vagrant_machine_name }}.{{ alias_local }}</code></td>
+          <td><code>@{{ vagrant_machine_name }}.{{ alias_local }}</code></td>
         {% endif %}
         </tr>
       {% endif %}
@@ -59,10 +59,10 @@
         {% if drupalvm_webserver == 'apache' -%}
           {%- for host in apache_vhosts -%}
 
-            {{ printHostsEntry(vagrant_ip, host.servername) }}
+            {{ printHostsEntry(updater_ip, host.servername) }}
             {% if host.serveralias is defined -%}
               {%- for alias in host.serveralias.split() -%}
-                {{ printHostsEntry(vagrant_ip, alias) }}
+                {{ printHostsEntry(updater_ip, alias) }}
               {%- endfor -%}
             {%- endif %}
 
@@ -71,11 +71,11 @@
           {%- for host in nginx_hosts -%}
 
             {% for server_name in host.server_name.split(' ') -%}
-              {{ printHostsEntry(vagrant_ip, server_name) }}
+              {{ printHostsEntry(updater_ip, server_name) }}
             {%- endfor %}
             {% if host.server_name_redirect is defined -%}
               {%- for server_name in host.server_name_redirect.split(' ') -%}
-                {{ printHostsEntry(vagrant_ip, server_name) }}
+                {{ printHostsEntry(updater_ip, server_name) }}
               {%- endfor -%}
             {%- endif %}
 
@@ -224,7 +224,7 @@
         </tr>
         <tr>
           <th>SSH Hostname</th>
-          <td><code>{{ vagrant_ip }}</code></td>
+          <td><code>{{ vagrant_hostname }} ({{ updater_ip }})</code></td>
         </tr>
         <tr>
           <th>SSH Username</th>

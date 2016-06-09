@@ -1,9 +1,10 @@
 #!/bin/bash bash
 
+#Set this variable
+PROJECT_NAME=project_name
+
 # Install database from backup directory
 DBBK=/var/db_backups
-
-PROJECT_NAME=project_name
 FILE=(*.mysql.gz)
 
 while [ -e $DBBK/$FILE ]; do

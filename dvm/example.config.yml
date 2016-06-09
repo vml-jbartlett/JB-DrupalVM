@@ -12,6 +12,7 @@ production_url: projecturl.com
 vagrant_hostname: "local.{{ production_url }}"
 vagrant_machine_name: project_name
 vagrant_ip: 0.0.0.0 #Set a default or leave at 0 for autoselection
+updater_ip: "{{ ansible_all_ipv4_addresses[1] }}" #If autoselection used, this gets IP from vagrant. If default is set, mirrors the default.
 
 vagrant_local_path: .
 config_dir: dvm

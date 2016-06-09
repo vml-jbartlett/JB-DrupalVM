@@ -1,2 +1,11 @@
 # Disable the galaxy role re-installation during provisions.
-config.vm.provisioners[0].config.galaxy_role_file = nil
+# config.vm.provisioners[0].config.galaxy_role_file = nil
+
+vhostname = vconfig['vagrant_hostname']
+
+config.trigger.after [:up, :resume, :reload] do
+  run_remote "service apache2 start"
+  run_remote "sudo service solr restart"
+  system("open", "https://#{vhostname}")
+  system("open", "http://dashboard.#{vhostname}/")
+end
