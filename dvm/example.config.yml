@@ -13,7 +13,7 @@ vagrant_hostname: "local.{{ production_url }}"
 vagrant_machine_name: project_name
 vagrant_ip: 0.0.0.0 #Set a default or leave at 0 for autoselection
 
-vagrant_local_path: "~/Sites/{{ production_url }}"
+vagrant_local_path: .
 config_dir: dvm
 
 # Setup for VML alias files
@@ -94,19 +94,32 @@ vagrant_cpus: 4
 # The web server software to use. Can be either 'apache' or 'nginx'.
 drupalvm_webserver: apache
 
-# Set this to false if you are using a different site deployment strategy and
+# Set this to 'false' if you are using a different site deployment strategy and
 # would like to configure 'vagrant_synced_folders' and 'apache_vhosts' manually.
 build_makefile: false
 drush_makefile_path: "{{ config_dir }}/drupal.make.yml"
 
-# Set this to false if you don't need to install drupal (using the drupal_*
+# Set 'build_makefile' to 'false' and this to 'true' if you are using a
+# composer based site deployment strategy.
+build_composer: false
+drupal_composer_path: "{{ config_dir }}/drupal.composer.json"
+drupal_composer_install_dir: "/var/www/drupalvm/drupal"
+drupal_composer_dependencies:
+  - "drupal/devel:8.*"
+
+# Set this to 'true' and 'build_makefile', 'build_composer' to 'false' if you
+# are using Composer's create-project as a site deployment strategy.
+build_composer_project: false
+drupal_composer_project_package: "drupal-composer/drupal-project:8.x-dev"
+drupal_composer_project_options: "--prefer-dist --stability dev --no-interaction"
+
+# Set this to 'false' if you don't need to install drupal (using the drupal_*
 # settings below), but instead copy down a database (e.g. using drush sql-sync).
 install_site: false
 
-# Settings for building a Drupal site from a makefile (if 'build_makefile:'
-# is 'true').
+# Settings for installing a Drupal site (if 'install_site:' is 'true').
 drupal_major_version: 7
-drupal_core_path: "/var/www/{{ production_url }}/docroot"
+drupal_core_path: "/var/www/{{ production_url }}/htdocs"
 drupal_domain: "{{ vagrant_hostname }}"
 drupal_site_name: "{{ project_name }}"
 drupal_install_profile: standard
@@ -131,7 +144,7 @@ drupalvm_cron_jobs: []
 
 # Drupal VM automatically creates a drush alias file in your ~/.drush folder if
 # this variable is 'true'.
-configure_local_drush_aliases: true
+configure_drush_aliases: true
 
 # Apache VirtualHosts. Add one for each site you are running inside the VM. For
 # multisite deployments, you can point multiple servernames at one documentroot.
@@ -160,6 +173,9 @@ apache_vhosts:
   - servername: "{{ vagrant_ip }}"
     serveralias: "dashboard.{{ vagrant_hostname }}"
     documentroot: "{{ dashboard_install_dir }}"
+    extra_parameters: |
+          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ dashboard_install_dir }}"
+          DirectoryIndex index.html
 
 #apache_vhosts_ssl:
 #  - servername: "{{ drupal_domain }}"
@@ -206,8 +222,8 @@ nginx_hosts:
 nginx_remove_default_vhost: true
 nginx_ppa_use: true
 
-# MySQL Databases and users. If build_makefile: is true, first database will
-# be used for the makefile-built site.
+# MySQL Databases and users. If 'install_site' is 'true', first database will
+# be used for the site.
 mysql_databases:
   - name: "{{ drupal_mysql_database }}"
     encoding: utf8
@@ -244,7 +260,7 @@ extra_packages:
 
 # `nodejs` must be in installed_extras for this to work. Valid examples: "0.10",
 # "0.12", "4.x", "5.x".
-nodejs_version: "6.x"
+nodejs_version: "0.12"
 nodejs_npm_global_packages: []
 nodejs_install_npm_user: "{{ drupalvm_user }}"
 
@@ -330,8 +346,8 @@ composer_path: /usr/bin/composer
 composer_home_path: "/home/{{ drupalvm_user }}/.composer"
 composer_home_owner: "{{ drupalvm_user }}"
 composer_home_group: "{{ drupalvm_user }}"
-# composer_global_packages:
-#   - { name: phpunit/phpunit, release: '@stable' }
+composer_global_packages:
+  - { name: hirak/prestissimo, release: '^0.3' }
 
 # Run specified scripts before or after VM is provisioned. Path is relative to
 # the `provisioning/playbook.yml` file.
@@ -341,6 +357,10 @@ post_provision_scripts:
   - "../scripts/post/provision/db_init.sh"
 
 # MySQL Configuration.
+mysql_packages:
+  - mariadb-client
+  - mariadb-server
+  - python-mysqldb
 mysql_root_password: root
 mysql_slow_query_log_enabled: true
 mysql_slow_query_time: 2

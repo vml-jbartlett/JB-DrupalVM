@@ -18,7 +18,6 @@ drupal/
 provisioning/roles
 
 db_backups/*
-box/*
 keys/*
 #keys/public/*
 solr/conf/*
