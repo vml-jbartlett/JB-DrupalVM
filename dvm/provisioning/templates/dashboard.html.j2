@@ -200,7 +200,7 @@
           <th>PHP-FPM enabled</th>
           <td><code>{{ 'yes' if php_enable_php_fpm else 'no' }}</code></td>
         </tr>
-        <tr><td colspan=2><small><a href="/server-info.php">View more details in the server's phpinfo() report</a>.</small></td></tr>
+        <tr><td colspan=2><small><a href="/server-info.php" target="_blank">View more details in the server's phpinfo() report</a>.</small></td></tr>
       </table>
     {%- endmacro -%}
 
@@ -290,7 +290,7 @@
               <div class="col-md-7 text-center">
                 <a href="http://{{ vagrant_hostname }}" target="_blank"><img src="http://docs.drupalvm.com/en/latest/images/drupal-vm-logo.png" alt="Drupal VM" title="Welcome to Drupal VM"></a>
                 <p><a href="https://github.com/geerlingguy/drupal-vm" target="_blank">Drupal VM</a> is a VM for local Drupal development, built with Vagrant + Ansible.</p>
-                <p><a class="btn btn-primary btn-lg" href="http://docs.drupalvm.com/en/latest/" role="button">Read the documentation</a></p>
+                <p><a class="btn btn-primary btn-lg" href="http://docs.drupalvm.com/en/latest/" role="button" target="_blank">Read the documentation</a></p>
               </div>
 
               <div class="col-md-5">
