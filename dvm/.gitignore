@@ -18,8 +18,7 @@ drupal/
 provisioning/roles
 
 db_backups/*
-#keys/*
-#solr/conf/*
+keys/*
 solr/data
 
 !README.md

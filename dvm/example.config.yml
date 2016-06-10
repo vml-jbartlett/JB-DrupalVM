@@ -179,16 +179,13 @@ apache_vhosts:
           ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ dashboard_install_dir }}"
           DirectoryIndex index.html
 
-#apache_vhosts_ssl:
-#  - servername: "{{ drupal_domain }}"
-#    documentroot: "{{ drupal_core_path }}"
-#    certificate_file: "/var/keys/CRTFILENAME.crt"
-#    certificate_key_file: "/var/keys/KEYFILENAME.key"
-#    certificate_chain_file: "/var/keys/CERFILENAME.cer"
-#    apache_ssl_protocol: "All -SSLv2 -SSLv3"
-#    apache_ssl_cipher_suite: ""
-#    extra_parameters: |
-#          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ drupal_core_path }}"
+apache_vhosts_ssl:
+  - servername: "{{ drupal_domain }}"
+    documentroot: "{{ drupal_core_path }}"
+    certificate_file: "/var/keys/{{ vagrant_machine_name }}.crt"
+    certificate_key_file: "/var/keys/{{ vagrant_machine_name }}.key"
+    extra_parameters: |
+          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ drupal_core_path }}"
 
 apache_remove_default_vhost: true
 apache_mods_enabled:
@@ -323,6 +320,7 @@ php_opcache_memory_consumption: "2048"
 php_opcache_max_accelerated_files: 4096
 php_max_input_vars: "4000"
 
+php_error_log: "On"
 php_max_execution_time: "300"
 php_max_input_time: "600"
 php_upload_max_filesize: "1G"
@@ -343,7 +341,8 @@ composer_global_packages:
 
 # Run specified scripts before or after VM is provisioned. Path is relative to
 # the `provisioning/playbook.yml` file.
-pre_provision_scripts: []
+pre_provision_scripts:
+  - "../scripts/pre/provision/init_keys.sh"
 post_provision_scripts:
   - "../scripts/post/provision/solr_setup.sh"
   - "../scripts/post/provision/db_init.sh"
