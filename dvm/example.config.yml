@@ -12,7 +12,6 @@ production_url: projecturl.com
 vagrant_hostname: "local.{{ production_url }}"
 vagrant_machine_name: project_name
 vagrant_ip: 0.0.0.0 #Set a default or leave at 0 for autoselection
-updater_ip: "{{ ansible_all_ipv4_addresses[1] }}" #If autoselection used, this gets IP from vagrant. If default is set, mirrors the default.
 
 vagrant_local_path: .
 config_dir: dvm
@@ -30,27 +29,39 @@ env_aliases:
     alias_user: "{{ vagrant_user }}"
     alias_files: "{{ alias_filespath }}"
     alias_ssh: true
+    alias_links:
+      - title: "Git Repo"
+        path: "https://www.github.com"
 
 #  - alias_name: "dev"
-#    alias_uri: "dev.projecturl.com"
+#    alias_uri: "{{ vagrant_machine_name }}.vmldev.com"
 #    alias_root: "{{ alias_rootpath }}"
-#    alias_host: "dev.ip.address"
+#    alias_host: "dlvmlweb01.vml.lan"
 #    alias_user: "{{ ssh_username }}"
 #    alias_files: "{{ alias_filespath }}"
+#    alias_links:
+#      - title: "Jenkins"
+#        path: "https://jenkins.vmlapps.com/job/neoport.vml.com-dev"
 #
 #  - alias_name: "stage"
-#    alias_uri: "stage.projecturl.com"
+#    alias_uri: "{{ vagrant_machine_name }}.vmlstage.com"
 #    alias_root: "{{ alias_rootpath }}"
-#    alias_host: "stage.ip.address"
+#    alias_host: "slvmlweb01.vml.lan"
 #    alias_user: "{{ ssh_username }}"
 #    alias_files: "{{ alias_filespath }}"
+#    alias_links:
+#      - title: "Jenkins"
+#        path: "https://jenkins.vmlapps.com/job/neoport.vml.com-stage"
 #
 #  - alias_name: "prod"
-#    alias_uri: "projecturl.com"
+#    alias_uri: "{{ vagrant_machine_name }}.vml.com"
 #    alias_root: "{{ alias_rootpath }}"
-#    alias_host: "prod.ip.address"
+#    alias_host: "plvmlweb01.vml.lan"
 #    alias_user: "{{ ssh_username }}"
 #    alias_files: "{{ alias_filespath }}"
+#    alias_links:
+#      - title: "Jenkins"
+#        path: "https://jenkins.vmlapps.com/job/neoport.vml.com-prod"
 
 # Allow Drupal VM to be accessed via a public network interface on your host.
 # Vagrant boxes are insecure by default, so be careful. You've been warned!
@@ -251,7 +262,7 @@ installed_extras:
   - solr
   # - varnish
   - xdebug
-  - xhprof
+  # - xhprof
 
 # Add any extra apt or yum packages you would like installed.
 extra_packages:
@@ -307,10 +318,7 @@ php_fpm_pool_conf_path: "/etc/php5/fpm/pool.d/www.conf"
 php_mysql_package: php5-mysql
 php_memcached_package: php5-memcached
 
-xhprof_download_url: https://github.com/phacility/xhprof/archive/master.tar.gz
-xhprof_download_folder_name: xhprof-master
-
-php_memory_limit: "512M"
+php_memory_limit: "1G"
 php_display_errors: "On"
 php_display_startup_errors: "On"
 php_realpath_cache_size: "2048k"
@@ -348,10 +356,6 @@ post_provision_scripts:
   - "../scripts/post/provision/db_init.sh"
 
 # MySQL Configuration.
-mysql_packages:
-  - mariadb-client
-  - mariadb-server
-  - python-mysqldb
 mysql_root_password: root
 mysql_slow_query_log_enabled: true
 mysql_slow_query_time: 2
