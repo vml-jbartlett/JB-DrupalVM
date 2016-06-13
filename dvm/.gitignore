@@ -22,3 +22,4 @@ keys/*
 solr/data
 
 !README.md
+!db_backups/initial_db.mysql.gz

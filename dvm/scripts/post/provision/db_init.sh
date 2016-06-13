@@ -9,9 +9,9 @@ timestamp() {
 }
 
 # Initial database from backup directory
-DBBK=/var/db_backups
-FILE=(*.mysql.gz)
-WRITE_FILE=/home/vagrant/.db_init
+DBBK="/var/db_backups"
+FILE="$PROJECT_NAME-*.mysql.gz"
+WRITE_FILE="/home/vagrant/.db_init"
 
 if [ ! -e $WRITE_FILE ]; then
   cd $DBBK
@@ -21,11 +21,15 @@ if [ ! -e $WRITE_FILE ]; then
     drush @$PROJECT_NAME.local fra -y
     drush @$PROJECT_NAME.local updb -y
     touch $WRITE_FILE
-    echo "$(timestamp): SQL restored from backup." >> $WRITE_FILE
+    echo "$(timestamp): SQL restored from recent $PROJECT_NAME backup." >> $WRITE_FILE
     cd
   else
+    drush @$PROJECT_NAME.local sql-drop -y
+    drush @$PROJECT_NAME.local sql-cli < $DBBK/initial_db.mysql.gz
+    drush @$PROJECT_NAME.local fra -y
+    drush @$PROJECT_NAME.local updb -y
     touch $WRITE_FILE
-    echo "$(timestamp): No SQL backups were detected." >> $WRITE_FILE
+    echo "$(timestamp): SQL restored from default backup." >> $WRITE_FILE
     cd
   fi
 else

@@ -12,6 +12,7 @@ production_url: projecturl.com
 vagrant_hostname: "local.{{ production_url }}"
 vagrant_machine_name: project_name
 vagrant_ip: 0.0.0.0 #Set a default or leave at 0 for autoselection
+#dashboard_logo: "images/dvm-logo-{{ vagrant_machine_name }}.png"
 
 vagrant_local_path: .
 config_dir: dvm
@@ -41,7 +42,7 @@ env_aliases:
 #    alias_files: "{{ alias_filespath }}"
 #    alias_links:
 #      - title: "Jenkins"
-#        path: "https://jenkins.vmlapps.com/job/neoport.vml.com-dev"
+#        path: "https://jenkins.path-dev"
 #
 #  - alias_name: "stage"
 #    alias_uri: "{{ vagrant_machine_name }}.vmlstage.com"
@@ -51,7 +52,7 @@ env_aliases:
 #    alias_files: "{{ alias_filespath }}"
 #    alias_links:
 #      - title: "Jenkins"
-#        path: "https://jenkins.vmlapps.com/job/neoport.vml.com-stage"
+#        path: "https://jenkins.path-stage"
 #
 #  - alias_name: "prod"
 #    alias_uri: "{{ vagrant_machine_name }}.vml.com"
@@ -61,7 +62,7 @@ env_aliases:
 #    alias_files: "{{ alias_filespath }}"
 #    alias_links:
 #      - title: "Jenkins"
-#        path: "https://jenkins.vmlapps.com/job/neoport.vml.com-prod"
+#        path: "https://jenkins.path-prod"
 
 # Allow Drupal VM to be accessed via a public network interface on your host.
 # Vagrant boxes are insecure by default, so be careful. You've been warned!
@@ -100,6 +101,11 @@ vagrant_synced_folders:
     type: nfs
     create: true
 
+  - local_path: "{{ vagrant_local_path }}/{{ config_dir }}/images/dashboard"
+    destination: "{{ dashboard_install_dir }}/images"
+    type: nfs
+    create: true
+
 # Memory and CPU to use for this VM.
 vagrant_memory: 2048
 vagrant_cpus: 4
@@ -130,18 +136,20 @@ drupal_composer_project_options: "--prefer-dist --stability dev --no-interaction
 # settings below), but instead copy down a database (e.g. using drush sql-sync).
 install_site: false
 
-# Settings for installing a Drupal site (if 'install_site:' is 'true').
-drupal_major_version: 7
+# Required Drupal settings.
 drupal_core_path: "/var/www/{{ production_url }}/htdocs"
+drupal_mysql_user: drupal
+drupal_mysql_password: drupal
+drupal_mysql_database: drupal
+
+# Settings for installing a Drupal site if 'install_site:' is 'true'.
+drupal_major_version: 7
 drupal_domain: "{{ vagrant_hostname }}"
 drupal_site_name: "{{ project_name }}"
 drupal_install_profile: standard
 drupal_enable_modules: [ 'devel' ]
 drupal_account_name: admin
 drupal_account_pass: admin
-drupal_mysql_user: drupal
-drupal_mysql_password: drupal
-drupal_mysql_database: drupal
 
 # Additional arguments or options to pass to `drush site-install`.
 drupal_site_install_extra_args: []
@@ -164,6 +172,7 @@ configure_drush_aliases: true
 # View the geerlingguy.apache Ansible Role README for more options.
 apache_vhosts:
   - servername: "{{ drupal_domain }}"
+    serveralias: "www.{{ drupal_domain }}"
     documentroot: "{{ drupal_core_path }}"
     extra_parameters: |
           ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ drupal_core_path }}"
@@ -192,6 +201,7 @@ apache_vhosts:
 
 apache_vhosts_ssl:
   - servername: "{{ drupal_domain }}"
+    serveralias: "www.{{ drupal_domain }}"
     documentroot: "{{ drupal_core_path }}"
     certificate_file: "/var/keys/{{ vagrant_machine_name }}.crt"
     certificate_key_file: "/var/keys/{{ vagrant_machine_name }}.key"
@@ -210,7 +220,7 @@ apache_mods_enabled:
 # here. Set the 'is_php' property for document roots that contain PHP apps like
 # Drupal.
 nginx_hosts:
-  - server_name: "{{ drupal_domain }}"
+  - server_name: "{{ drupal_domain }} www.{{ drupal_domain }}"
     root: "{{ drupal_core_path }}"
     is_php: true
 
@@ -404,3 +414,4 @@ selenium_version: 2.46.0
 # Other configuration.
 dashboard_install_dir: /var/www/dashboard
 known_hosts_path: ~/.ssh/known_hosts
+#ssh_home: "{{ drupal_core_path }}"

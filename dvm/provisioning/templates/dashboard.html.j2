@@ -304,7 +304,13 @@
           <section class="jumbotron">
             <div class="row">
               <div class="col-md-7 text-center">
-                <a href="http://www.drupalvm.com/" target="_blank"><img src="http://docs.drupalvm.com/en/latest/images/drupal-vm-logo.png" alt="Drupal VM" title="Welcome to Drupal VM"></a>
+                {%- if dashboard_logo -%}
+                  <a href="{{ vagrant_hostname }}" target="_blank">
+                    <img src="{{ dashboard_logo }}" alt="{{ project_name }} Drupal VM" title="Welcome to {{ project_name }} Drupal VM">
+                  </a>
+                {%- else -%}
+                  <a href="http://www.drupalvm.com/" target="_blank"><img src="http://docs.drupalvm.com/en/latest/images/drupal-vm-logo.png" alt="Drupal VM" title="Welcome to Drupal VM"></a>
+                {%- endif -%}
                 <p><a href="https://github.com/geerlingguy/drupal-vm" target="_blank">Drupal VM</a> is a VM for local Drupal development, built with Vagrant + Ansible.</p>
                 <p><a class="btn btn-primary btn-lg" href="http://docs.drupalvm.com/en/latest/" role="button" target="_blank">Read the documentation</a></p>
               </div>
@@ -323,6 +329,7 @@
 
       <div class="row">
         <div class="col-md-12">
+
           <section class="panel panel-default">
             <div class="panel-heading">Your sites</div>
             <div class="panel-body">
@@ -334,6 +341,7 @@
 
       <div class="row">
         <div class="col-md-7">
+
           <section class="panel panel-default">
             <div class="panel-heading">Development tools</div>
             <div class="panel-body">

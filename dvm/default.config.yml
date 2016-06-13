@@ -58,18 +58,20 @@ drupal_composer_project_options: "--prefer-dist --stability dev --no-interaction
 # settings below), but instead copy down a database (e.g. using drush sql-sync).
 install_site: true
 
-# Settings for installing a Drupal site (if 'install_site:' is 'true').
-drupal_major_version: 8
+# Required Drupal settings.
 drupal_core_path: "{{ drupal_composer_install_dir }}/web"
+drupal_mysql_user: drupal
+drupal_mysql_password: drupal
+drupal_mysql_database: drupal
+
+# Settings for installing a Drupal site if 'install_site:' is 'true'.
+drupal_major_version: 8
 drupal_domain: "{{ vagrant_hostname }}"
 drupal_site_name: "Drupal"
 drupal_install_profile: standard
 drupal_enable_modules: [ 'devel' ]
 drupal_account_name: admin
 drupal_account_pass: admin
-drupal_mysql_user: drupal
-drupal_mysql_password: drupal
-drupal_mysql_database: drupal
 
 # Additional arguments or options to pass to `drush site-install`.
 drupal_site_install_extra_args: []
@@ -92,6 +94,7 @@ configure_drush_aliases: true
 # View the geerlingguy.apache Ansible Role README for more options.
 apache_vhosts:
   - servername: "{{ drupal_domain }}"
+    serveralias: "www.{{ drupal_domain }}"
     documentroot: "{{ drupal_core_path }}"
     extra_parameters: |
           ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ drupal_core_path }}"
@@ -130,7 +133,7 @@ apache_mods_enabled:
 # here. Set the 'is_php' property for document roots that contain PHP apps like
 # Drupal.
 nginx_hosts:
-  - server_name: "{{ drupal_domain }}"
+  - server_name: "{{ drupal_domain }} www.{{ drupal_domain }}"
     root: "{{ drupal_core_path }}"
     is_php: true
 
@@ -289,3 +292,4 @@ selenium_version: 2.46.0
 # Other configuration.
 dashboard_install_dir: /var/www/dashboard
 known_hosts_path: ~/.ssh/known_hosts
+#ssh_home: "{{ drupal_core_path }}"
