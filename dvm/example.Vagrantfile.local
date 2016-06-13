@@ -3,9 +3,7 @@
 
 vhostname = vconfig['vagrant_hostname']
 
-config.trigger.after [:up, :resume, :reload] do
+config.trigger.after [:up, :resume, :reload, :provision] do
   run_remote "service apache2 start"
-  run_remote "sudo service solr restart"
-  # system("open", "https://#{vhostname}")
   system("open", "http://dashboard.#{vhostname}/")
 end

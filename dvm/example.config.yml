@@ -81,23 +81,13 @@ vagrant_synced_folders:
     type: nfs
     create: true
 
-  - local_path: "{{ vagrant_local_path }}/{{ config_dir }}/keys"
-    destination: /var/keys
-    type: nfs
-    create: true
-
   - local_path: "{{ vagrant_local_path }}/{{ config_dir }}/db_backups"
     destination: /var/db_backups
     type: nfs
     create: true
 
-  - local_path: "{{ vagrant_local_path }}/{{ config_dir }}/solr"
-    destination: /var/solr_files
-    type: nfs
-    create: true
-
   - local_path: "{{ vagrant_local_path }}/{{ config_dir }}/scripts"
-    destination: /var/script_test
+    destination: /var/scripts
     type: nfs
     create: true
 

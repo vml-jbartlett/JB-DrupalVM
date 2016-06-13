@@ -1,14 +1,14 @@
 #!/bin/bash
 
 #Set this variable
-PROJECT_NAME=project_name
-PROJECT_LOCAL=local.projecturl.com
+PROJECT_NAME="project_name"
+PROJECT_LOCAL="local.$PROJECT_NAME.com"
 
-COUNTRY=country
-STATE=state
-LOCALE=city
-ORG_NAME=org
-COMMON_NAME=$PROJECT_LOCAL
+COUNTRY="country"
+STATE="state"
+LOCALE="city"
+ORG_NAME="org"
+COMMON_NAME="$PROJECT_LOCAL"
 
 # Define a timestamp function
 timestamp() {
@@ -16,14 +16,15 @@ timestamp() {
 }
 
 # Initial database from backup directory
-KEYS=/var/keys
-FILE=($PROJECT_NAME.crt)
-WRITE_FILE=/home/vagrant/.init_keys
+KEYS="/var/keys"
+FILE="$PROJECT_NAME.crt"
+WRITE_FILE="/home/vagrant/.init_keys"
 
 if [ ! -e $WRITE_FILE ]; then
+  sudo mkdir $KEYS
   cd $KEYS
   if [ ! -e $KEYS/$FILE ]; then
-    openssl req -newkey rsa:2048 -nodes -keyout $PROJECT_NAME.key -x509 -days 365 -out $PROJECT_NAME.crt -subj "/C=$COUNTRY/ST=$STATE/L=$LOCALE/O=$ORG_NAME/CN=$COMMON_NAME"
+    sudo openssl req -newkey rsa:2048 -nodes -keyout $PROJECT_NAME.key -x509 -days 365 -out $PROJECT_NAME.crt -subj "/C=$COUNTRY/ST=$STATE/L=$LOCALE/O=$ORG_NAME/CN=$COMMON_NAME"
     touch $WRITE_FILE
     echo "$(timestamp): Keys created for $PROJECT_NAME." >> $WRITE_FILE
     cd

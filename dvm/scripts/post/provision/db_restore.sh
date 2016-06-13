@@ -1,7 +1,7 @@
 #!/bin/bash bash
 
 #Set this variable
-PROJECT_NAME=project_name
+PROJECT_NAME="project_name"
 
 # Install database from backup directory
 DBBK=/var/db_backups
