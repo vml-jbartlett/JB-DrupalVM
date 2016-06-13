@@ -1,13 +1,6 @@
-# TODO 
-- Update instructions for generics
-- Add startup instructions for building from a blank box
-- Build docs (possibly in MKDocs)
-
-
-
 Installation Profile Instructions
 =================================
-###### **Updated:** _2016-06-09_
+###### **Updated:** _2016-06-13_
 
 
 ## Requirements
@@ -18,7 +11,7 @@ The basic tools needed to install this box are:
 * **VirtualBox** - [https://www.virtualbox.org/wiki/Downloads](https://www.virtualbox.org/wiki/Downloads)
 * **Ansible** - [https://valdhaus.co/writings/ansible-mac-osx](https://valdhaus.co/writings/ansible-mac-osx)
 * **Drush** - [http://docs.drush.org/en/master/install-alternative](http://docs.drush.org/en/master/install-alternative)
-* A recent copy of the [**%project_name% Production Database**] (See the section on "[Database Updating](#DB_Updates)" for more information.)
+* **Optional** - A recent copy of the [**%project_name% Production Database**] (See the section on "[Database Updating](#DB_Updates)" for more information.)
 
 
 ## Installation instructions
@@ -33,14 +26,13 @@ The basic tools needed to install this box are:
 
 5. Install the following Vagrant plugins: `vagrant plugin install vagrant-auto_network vagrant-hostsupdater vagrant-share vagrant-vbguest vagrant-triggers`
 
-6. Place your %project_name% database backup in the `dvm/db_backups` folder and it will update during the post-provision process. 
-For instruction on how to get a recent copy of %project_name%'s database, see the section on **Database Updating** below.
+6. If you have a recent database backup, place it in the `dvm/db_backups` folder and it will update during the post-provision process. For instruction on how to get a recent copy of the Production database, see the section on "[Database Updating](#DB_Updates)" below.
 
 7. Bring up Vagrant (This might take a while!): `vagrant up` 
 
 8. Install your public key: `cat ~/.ssh/id_rsa.pub | ssh vagrant@IP_SET_BY_VAGRANT 'cat >> .ssh/authorized_keys'` The default password for user "vagrant" is "vagrant."
 
-9. Once complete, open the dashboard at: [http://dashboard.%vagrant_hostname%](http://dashboard.%vagrant_hostname%). Your site should now be available at [https://%vagrant_hostname%](https://%vagrant_hostname%)
+9. Once complete, Vagrant will open the dashboard in your default browser - [http://dashboard.%vagrant_hostname%](http://dashboard.%vagrant_hostname%). Your site should now be available at [https://%vagrant_hostname%](https://%vagrant_hostname%)
 
 ### Troubleshooting: 
 
@@ -56,12 +48,13 @@ If you get an "**ECDSA host key**" error, check your "known_host" file `sudo vi/
 
 ### Drush Aliases
 
-The site install should have added Drush aliases for the available %project_name% environments. They are as follows: 
+The site install should have added Drush aliases for the available environments. They are as follows: 
 
 * **@%project_name%.local** - For your local VM, [https://%vagrant_hostname%](https://%vagrant_hostname%)
 * **@%project_name%.stage** - For the staging site at [https://%stage.alias_uri%](https://%stage.alias_uri%)
 * **@%project_name%.dev** - For the development site set up at [https://%dev.alias_uri%](https://%dev.alias_uri%)
 * **@%project_name%.prod** -  For the production site at [https://%production_url%](https://%production_url%).
+
 To use these, cd into the (core Drupal file): `cd %drupal_core_path%` (or from anywhere if Drush is installed globally on your machine.) and run your Drush commands, e.g., `drush @%project_name%.local status` .
 
 ### Image and file syncing
