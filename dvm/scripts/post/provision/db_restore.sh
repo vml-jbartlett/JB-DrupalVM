@@ -4,7 +4,7 @@
 PROJECT_NAME="project_name"
 
 # Install database from backup directory
-DBBK=/var/db_backups
+DBBK=/var/backups
 FILE=(*.mysql.gz)
 
 while [ -e $DBBK/$FILE ]; do
