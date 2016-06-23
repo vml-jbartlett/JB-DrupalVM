@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #Set this variable
-PROJECT_NAME="employee"
-PROJECT_URL="$PROJECT_NAME.vml.com"
+PROJECT_NAME="project_name"
+PROJECT_URL="$PROJECT_NAME.com"
 
 # Define a timestamp function
 timestamp() {
@@ -17,7 +17,7 @@ WRITE_FILE="/home/vagrant/.file_init"
 if [ ! -e $WRITE_FILE ]; then
   if [ -e $DBBK/$FILE ]; then
     cp -R $DBBK/. $TARGET
-    chmod 2755 -R $TARGET
+    chmod 755 -R $TARGET
     touch $WRITE_FILE
     echo "$(timestamp): Files directory built from initial $PROJECT_NAME files backup." >> $WRITE_FILE
   else

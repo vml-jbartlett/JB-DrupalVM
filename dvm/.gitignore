@@ -17,7 +17,8 @@ drupal/
 
 provisioning/roles
 
-backups/*
+backups/*.mysql.gz
+backups/files/*
 keys/*
 
 !README.md

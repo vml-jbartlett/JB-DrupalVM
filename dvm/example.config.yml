@@ -12,7 +12,7 @@ production_url: projecturl.com
 vagrant_hostname: "local.{{ production_url }}"
 vagrant_machine_name: project_name
 vagrant_ip: 0.0.0.0 #Set a default or leave at 0 for autoselection
-#dashboard_logo: "images/dvm-logo-{{ vagrant_machine_name }}.png"
+dashboard_logo: "images/dvm-logo-{{ vagrant_machine_name }}.png"
 
 vagrant_local_path: .
 config_dir: dvm
@@ -35,7 +35,7 @@ env_aliases:
         path: "https://www.github.com"
 
 #  - alias_name: "dev"
-#    alias_uri: "{{ vagrant_machine_name }}.vmldev.com"
+#    alias_uri: "dev.{{ production_url }}."
 #    alias_root: "{{ alias_rootpath }}"
 #    alias_host: "host.proxy"
 #    alias_user: "{{ ssh_username }}"
@@ -45,7 +45,7 @@ env_aliases:
 #        path: "https://jenkins.path-dev"
 #
 #  - alias_name: "stage"
-#    alias_uri: "{{ vagrant_machine_name }}.vmlstage.com"
+#    alias_uri: "stage.{{ production_url }}"
 #    alias_root: "{{ alias_rootpath }}"
 #    alias_host: "host.proxy"
 #    alias_user: "{{ ssh_username }}"
@@ -55,7 +55,7 @@ env_aliases:
 #        path: "https://jenkins.path-stage"
 #
 #  - alias_name: "prod"
-#    alias_uri: "{{ vagrant_machine_name }}.vml.com"
+#    alias_uri: "{{ production_url }}"
 #    alias_root: "{{ alias_rootpath }}"
 #    alias_host: "host.proxy"
 #    alias_user: "{{ ssh_username }}"
