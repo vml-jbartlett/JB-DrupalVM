@@ -10,7 +10,7 @@ timestamp() {
 }
 
 # Initial database from backup directory
-DBBK="/var/backups/files"
+DBBK="/var/site_backups/files"
 TARGET="/var/www/$PROJECT_URL/htdocs/sites/default/files"
 WRITE_FILE="/home/vagrant/.file_init"
 

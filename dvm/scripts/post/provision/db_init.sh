@@ -10,7 +10,7 @@ timestamp() {
 }
 
 # Initial database from backup directory
-DBBK="/var/backups"
+DBBK="/var/site_backups/db"
 FILE="$PROJECT_NAME-*.mysql.gz"
 WRITE_FILE="/home/vagrant/.db_init"
 

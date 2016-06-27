@@ -17,9 +17,9 @@ drupal/
 
 provisioning/roles
 
-backups/*.mysql.gz
-backups/files/*
+site_backups/db/*.mysql.gz
+site_backups/files/*
 keys/*
 
 !README.md
-!backups/initial_db.mysql.gz
+!initial_db.mysql.gz
