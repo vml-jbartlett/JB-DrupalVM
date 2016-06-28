@@ -1,6 +1,6 @@
 Installation Profile Instructions
 =================================
-###### **Updated:** _2016-06-13_
+###### **Updated:** _2016-06-27_
 
 
 ## Requirements
@@ -26,7 +26,7 @@ The basic tools needed to install this box are:
 
 5. Install the following Vagrant plugins: `vagrant plugin install vagrant-auto_network vagrant-hostsupdater vagrant-share vagrant-vbguest vagrant-triggers`
 
-6. If you have a recent database backup, place it in the `dvm/db_backups` folder and it will update during the post-provision process. For instruction on how to get a recent copy of the Production database, see the section on "[Database Updating](#DB_Updates)" below.
+6. If you have a recent database backup, place it in the `dvm/site_backups/db` folder and it will update during the post-provision process. For instruction on how to get a recent copy of the Production database, see the section on "[Database Updating](#DB_Updates)" below.
 
 7. Bring up Vagrant (This might take a while!): `vagrant up` 
 

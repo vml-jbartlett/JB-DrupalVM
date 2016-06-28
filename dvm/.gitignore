@@ -19,7 +19,6 @@ provisioning/roles
 
 site_backups/db/*.mysql.gz
 site_backups/files/*
-keys/*
 
 !README.md
 !initial_db.mysql.gz
