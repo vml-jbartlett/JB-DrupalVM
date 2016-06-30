@@ -19,12 +19,14 @@ if [ ! -e $WRITE_FILE ]; then
     drush @$LOWER_NAME.local sql-drop -y
     drush @$LOWER_NAME.local sql-cli < $DBBK/$FILE
     drush @$LOWER_NAME.local updb -y
+    drush @$LOWER_NAME.local cc all
     touch $WRITE_FILE
     echo "$(timestamp): SQL restored from recent $PROJECT_NAME backup." >> $WRITE_FILE
   elif [ -e $DBBK/initial_db.mysql.gz ]; then
     drush @$LOWER_NAME.local sql-drop -y
     drush @$LOWER_NAME.local sql-cli < $DBBK/initial_db.mysql.gz
     drush @$LOWER_NAME.local updb -y
+    drush @$LOWER_NAME.local cc all
     touch $WRITE_FILE
     echo "$(timestamp): SQL restored from default backup." >> $WRITE_FILE
   else
