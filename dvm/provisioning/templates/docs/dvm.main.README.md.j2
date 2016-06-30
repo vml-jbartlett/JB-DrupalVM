@@ -16,9 +16,9 @@ The basic tools needed to install this box are:
 ## Installation instructions
 
 1. Create a fork in the [%project_name% Repo](%project_upstream_repo%) and clone the site to your ~/Sites folder:
-    `git clone %project_origin_repo% ~/Sites/%production_url%`
+    `git clone %project_origin_repo% ~/Sites/%project_url%`
 2. CD into your site folder:
-    `cd ~/Sites/%production_url%`
+    `cd ~/Sites/%project_url%`
 3. Copy the example.local.config.yml and save as local.config.yml: 
     `cp dvm/example.local.config.yml dvm/local.config.yml`
 4. Edit the local.config.yml and update the "ssh_username" with your ssh login name: 
@@ -44,7 +44,7 @@ The site install should have added Drush aliases for the available environments.
 * **@%project_name%.local** - For your local VM, [https://%vagrant_hostname%](https://%vagrant_hostname%)
 * **@%project_name%.stage** - For the staging site at [https://%stage.alias_uri%](https://%stage.alias_uri%)
 * **@%project_name%.dev** - For the development site set up at [https://%dev.alias_uri%](https://%dev.alias_uri%)
-* **@%project_name%.prod** -  For the production site at [https://%production_url%](https://%production_url%).
+* **@%project_name%.prod** -  For the project site at [https://%project_url%](https://%project_url%).
 
 To use these, cd into the (core Drupal file): `cd %drupal_core_path%` (or from anywhere if Drush is installed globally on your machine.) and run your Drush commands, e.g., `drush @%project_name%.local status` .
 
@@ -64,9 +64,9 @@ Images and other files are updated automatically on your local through the [Stag
 
 ### <a name="DB_Updates"></a> Database updating
 
-Implementing a recent version of Production database is now a part of the initialization process of the Vagrant build. If your site launches without a database install or you wish to update your local with what is currently on production, follow the instructions below.
+Implementing a recent version of Production database is now a part of the initialization process of the Vagrant build. If your site launches without a database install or you wish to update your local with what is currently on project, follow the instructions below.
 
-To update your data to what is currently available on Production, download a recent backup by logging into the %project_name% Prod site and go to [Backup and Migrate](https://%production_url%/admin/config/system/backup_migrate).
+To update your data to what is currently available on Production, download a recent backup by logging into the %project_name% Prod site and go to [Backup and Migrate](https://%project_url%/admin/config/system/backup_migrate).
 From here, you can either generate a new backup or download a recent file from the "Saved backups" tab. (You will need Admin access to %project_name% in order to do this.)
 
 With the downloaded file, do one of the following tasks:
