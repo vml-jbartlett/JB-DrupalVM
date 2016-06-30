@@ -7,62 +7,49 @@ vagrant_synced_folder_default_type: nfs
 
 # If you need to run multiple instances of Drupal VM, set a unique hostname,
 # machine name, and IP address for each instance.
-project_name: Project Name
-production_url: projecturl.com
-vagrant_hostname: "local.{{ production_url }}"
-vagrant_machine_name: project_name
+vagrant_hostname: "local.{{ project_url }}"
+vagrant_machine_name: "{{ project_machine_name }}"
 vagrant_ip: 0.0.0.0 #Set a default or leave at 0 for autoselection
-dashboard_logo: "images/dvm-logo-{{ vagrant_machine_name }}.png"
+vagrant_autoip: "{{ ansible_all_ipv4_addresses[1] }}"
 
 vagrant_local_path: .
 config_dir: dvm
 
-# Setup for VML alias files
-alias_local: "local"
-alias_filespath: "/sites/default/files"
-alias_rootpath: "set/to/remote/rootpath"
+# Setup for alias files
 
 env_aliases:
-  - alias_name: "local"
+  - alias_name: "{{ alias.local.name }}"
     alias_uri: "{{ vagrant_hostname }}"
     alias_root: "{{ drupal_core_path }}"
     alias_host: "{{ vagrant_hostname }}"
     alias_user: "{{ vagrant_user }}"
-    alias_files: "{{ alias_filespath }}"
+    alias_files: "{{ alias.files_path }}"
     alias_ssh: true
-    alias_links:
-      - title: "Git Repo"
-        path: "https://www.github.com"
+    alias_links: "{{ alias.local.links }}"
 
-#  - alias_name: "dev"
-#    alias_uri: "dev.{{ production_url }}."
-#    alias_root: "{{ alias_rootpath }}"
-#    alias_host: "host.proxy"
+#  - alias_name: "{{ alias.dev.name }}"
+#    alias_uri: "{{ alias.dev.uri }}"
+#    alias_root: "{{ alias.root_path }}"
+#    alias_host: "{{ alias.dev.host }}"
 #    alias_user: "{{ ssh_username }}"
-#    alias_files: "{{ alias_filespath }}"
-#    alias_links:
-#      - title: "Jenkins"
-#        path: "https://jenkins.path-dev"
+#    alias_files: "{{ alias.files_path }}"
+#    alias_links: "{{ alias.dev.links }}"
 #
-#  - alias_name: "stage"
-#    alias_uri: "stage.{{ production_url }}"
-#    alias_root: "{{ alias_rootpath }}"
-#    alias_host: "host.proxy"
+#  - alias_name: "{{ alias.stage.name }}"
+#    alias_uri: "{{ alias.stage.uri }}"
+#    alias_root: "{{ alias.root_path }}"
+#    alias_host: "{{ alias.stage.host }}"
 #    alias_user: "{{ ssh_username }}"
-#    alias_files: "{{ alias_filespath }}"
-#    alias_links:
-#      - title: "Jenkins"
-#        path: "https://jenkins.path-stage"
+#    alias_files: "{{ alias.files_path }}"
+#    alias_links: "{{ alias.stage.links }}"
 #
-#  - alias_name: "prod"
-#    alias_uri: "{{ production_url }}"
-#    alias_root: "{{ alias_rootpath }}"
-#    alias_host: "host.proxy"
+#  - alias_name: "{{ alias.prod.name }}"
+#    alias_uri: "{{ alias.prod.uri }}"
+#    alias_root: "{{ alias.root_path }}"
+#    alias_host: "{{ alias.prod.host }}"
 #    alias_user: "{{ ssh_username }}"
-#    alias_files: "{{ alias_filespath }}"
-#    alias_links:
-#      - title: "Jenkins"
-#        path: "https://jenkins.path-prod"
+#    alias_files: "{{ alias.files_path }}"
+#    alias_links: "{{ alias.prob.links }}"
 
 # Allow Drupal VM to be accessed via a public network interface on your host.
 # Vagrant boxes are insecure by default, so be careful. You've been warned!
@@ -77,7 +64,7 @@ vagrant_synced_folders:
   # any of the build_* settings are 'true'. By default the folder is set to
   # the drupal-vm folder.
   - local_path: "{{ vagrant_local_path }}"
-    destination: "/var/www/{{ production_url }}"
+    destination: "/var/www/{{ project_url }}"
     type: nfs
     create: true
 
@@ -127,7 +114,7 @@ drupal_composer_project_options: "--prefer-dist --stability dev --no-interaction
 install_site: false
 
 # Required Drupal settings.
-drupal_core_path: "/var/www/{{ production_url }}/htdocs"
+drupal_core_path: "/var/www/{{ project_url }}/htdocs"
 drupal_mysql_user: drupal
 drupal_mysql_password: drupal
 drupal_mysql_database: drupal

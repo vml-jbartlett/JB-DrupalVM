@@ -1,13 +1,6 @@
-# TODO 
-- Update instructions for generics
-- Add startup instructions for building from a blank box
-- Build docs (possibly in MKDocs)
-
-
-
 Installation Profile Instructions
 =================================
-###### **Updated:** _2016-05-26_
+###### **Updated:** _2016-06-29_
 
 
 ## Requirements
@@ -18,79 +11,101 @@ The basic tools needed to install this box are:
 * **VirtualBox** - [https://www.virtualbox.org/wiki/Downloads](https://www.virtualbox.org/wiki/Downloads)
 * **Ansible** - [https://valdhaus.co/writings/ansible-mac-osx](https://valdhaus.co/writings/ansible-mac-osx)
 * **Drush** - [http://docs.drush.org/en/master/install-alternative](http://docs.drush.org/en/master/install-alternative)
-* A recent copy of the **{{ project_name }} Production Database**
-* A copy of your **Public SSH Key**
-
+ 
 
 ## Installation instructions
 
-1. Create a fork in the [{{ project_name }} Repo]({{ project_upstream_repo }}) and clone the site to your ~/Sites folder: `git clone {{ project_origin_repo }} ~/Sites/{{ production_url }}`
-
-2. CD into your site folder: `cd ~/Sites/{{ production_url }}`
-
-3. Copy the example.local.config.yml and save as local.config.yml: `cp dvm/example.local.config.yml dvm/local.config.yml`
-
-4. Edit the local.config.yml and update your **ssh_username** (If your local isn't installed at ~/Sites/{{ production_url }}, you will need to update these references as well.): `vi dvm/local.config.yml`
-
-5. Install the following Vagrant plugins: 
-```bash
-vagrant plugin install vagrant-auto_network
-vagrant plugin install vagrant-hostsupdater
-vagrant plugin install vagrant-share
-vagrant plugin install vagrant-vbguest
-```
-
-6. Place your {{ project_name }} database backup in the `dvm/backups` folder and it will update during the post-provision process. 
-For instruction on how to get a recent copy of {{ project_name }}'s database, see the section on **Database Updating** below.
-
-7. **Skip this step pending further testing** ~~Put a copy of your public key in the `/dvm/keys/public` folder: `cp ~/.ssh/id_rsa.pub ~/Sites/{{ production_url }}/dvm/keys/public/`~~
-
-8. Bring up Vagrant (This might take a while!): `vagrant up` 
-
-8. Install your public key: `cat ~/.ssh/id_rsa.pub | ssh vagrant@{{ vagrant_ip }} 'cat >> .ssh/authorized_keys'` The default password for user "vagrant" is "vagrant."
-
-9. Once complete, open the dashboard at: [http://dashboard.{{ vagrant_hostname }}](http://dashboard.{{ vagrant_hostname }}). Your site should now be available at [https://{{ vagrant_hostname }}](https://{{ vagrant_hostname }})
+1. Create a fork in the [%project_name% Repo](%project_upstream_repo%) and clone the site to your ~/Sites folder:
+    `git clone %project_origin_repo% ~/Sites/%production_url%`
+2. CD into your site folder:
+    `cd ~/Sites/%production_url%`
+3. Copy the example.local.config.yml and save as local.config.yml: 
+    `cp dvm/example.local.config.yml dvm/local.config.yml`
+4. Edit the local.config.yml and update the "ssh_username" with your ssh login name: 
+    `vi dvm/local.config.yml`
+5. Bring up Vagrant (This might take a while!):
+    `vagrant up`
+6. Once complete, Vagrant will open the dashboard in your default browser - [http://dashboard.%vagrant_hostname%](http://dashboard.%vagrant_hostname%). Your site should now be available at [https://%vagrant_hostname%](https://%vagrant_hostname%)
 
 ### Troubleshooting: 
 
 If vagrant throws an error on `vagrant up`: 
 
 * Try updating your Vagrant box: `vagrant box update` and run `vagrant up --provision`.
-* Run `vagrant box list` to see if the "{{ vagrant_box }}" exists. If it does, remove it with `vagrant box remove {{ vagrant_box }}` then run `vagrant up` again.
+* Run `vagrant box list` to see if the box "%vagrant_box%" exists. If it does, remove it with `vagrant box remove %vagrant_box%` then run `vagrant up` again.
 
-If you get an "**ECDSA host key**" error, check your "known_host" file `sudo vi ~/.ssh/known_hosts` for instances of "{{ vagrant_hostname }}" - most likely at the bottom of the file. Remove the line and save the file. Then, run `vagrant up` again.
+If you get an "**ECDSA host key**" error, check your "known_host" file `sudo vi ~/.ssh/known_hosts` for instances of "%vagrant_hostname%" - most likely at the bottom of the file. Remove the line and save the file. Then, run `vagrant up` again.
+
+
+## Drush Aliases
+
+The site install should have added Drush aliases for the available environments. They are as follows: 
+
+* **@%project_name%.local** - For your local VM, [https://%vagrant_hostname%](https://%vagrant_hostname%)
+* **@%project_name%.stage** - For the staging site at [https://%stage.alias_uri%](https://%stage.alias_uri%)
+* **@%project_name%.dev** - For the development site set up at [https://%dev.alias_uri%](https://%dev.alias_uri%)
+* **@%project_name%.prod** -  For the production site at [https://%production_url%](https://%production_url%).
+
+To use these, cd into the (core Drupal file): `cd %drupal_core_path%` (or from anywhere if Drush is installed globally on your machine.) and run your Drush commands, e.g., `drush @%project_name%.local status` .
+
+
+### Installing authorized ssh keys
+
+**Note:** This step may no longer be required.
+
+If needed, install your public key: `cat ~/.ssh/id_rsa.pub | ssh vagrant@%vagrant_autoip% 'cat >> .ssh/authorized_keys'` For the local alias, the default password for user "vagrant" is "vagrant." All other aliases should use your normal login info following the example given. 
 
 
 ## Initial Database and File updates
-
-### Drush Aliases
-
-The site install should have added Drush aliases for the available {{ project_name }} environments. They are as follows: 
-
-* **@{{ project_name }}.local** - For your local VM, [https://{{ vagrant_hostname }}](https://{{ vagrant_hostname }})
-* **@{{ project_name }}.dev** - For the development site set up at [https://{{ dev.alias_uri }}](https://{{ dev.alias_uri }})
-* **@{{ project_name }}.stage** - For the staging site at [https://{{ stage.alias_uri }}](https://{{ stage.alias_uri }})
-* **@{{ project_name }}.prod** -  For the production site at [https://{{ production_url }}](https://{{ production_url }}). While this alias is set to work with the prod site, the alias is not currently usable as proxy access is not currently available for this server.
-
-To use these, cd into the (core Drupal file): `cd {{ drupal_core_path }}` (or from anywhere if Drush is installed globally on your machine.) 
-and run your Drush commands, e.g., `drush @{{ project_name }}.local status` .
 
 ### Image and file syncing
 
 Images and other files are updated automatically on your local through the [Stage File Proxy module](https://www.drupal.org/project/stage_file_proxy).
 
-### Database updating
+### <a name="DB_Updates"></a> Database updating
 
-A recent version of the {{ project_name }} DB is include within the current vagrant box at "{{ custom_vagrant_box }}." If your site launches without a database, run `vagrant reload --provision` to update your local repo to the most recent version.
+Implementing a recent version of Production database is now a part of the initialization process of the Vagrant build. If your site launches without a database install or you wish to update your local with what is currently on production, follow the instructions below.
 
-To update your data to what is currently available on Production, download a recent backup by logging into the {{ project_name }} Prod site and go to [Backup and Migrate](https://{{ production_url }}/admin/config/system/backup_migrate).
-From here, you can either generate a new backup or download a recent file from the "Saved backups" tab. (You will need Admin access to {{ project_name }} in order to do this.)
+To update your data to what is currently available on Production, download a recent backup by logging into the %project_name% Prod site and go to [Backup and Migrate](https://%production_url%/admin/config/system/backup_migrate).
+From here, you can either generate a new backup or download a recent file from the "Saved backups" tab. (You will need Admin access to %project_name% in order to do this.)
 
 With the downloaded file, do one of the following tasks:
 
-* Go to [Backup and Migrate](https://{{ vagrant_hostname }}/admin/config/system/backup_migrate) on your local site and restore the database with your backup file.
-* Using Drush, sync from the SQL dump file with: `drush @{{ project_name }}.local sql-cli < {{ vagrant_local_path }}/{{ project_name }}*.mysql.gz`
-* Import the backup through other third party software (e.g.: Sequel Pro) using the SQL settings found on the [dashboard](http://dashboard.{{ vagrant_hostname }}).
+* Go to [Backup and Migrate](https://%vagrant_hostname%/admin/config/system/backup_migrate) on your local site and restore the database with your backup file.
+* Using Drush, sync from the SQL dump file with: `drush @%project_name%.local sql-cli < %vagrant_local_path%/*.mysql.gz`
+* Import the backup through other third party software (e.g.: Sequel Pro) using the SQL settings found on the [dashboard](http://dashboard.%vagrant_hostname%).
+
+
+## Running Vagrant without sudo password
+
+Since this Vagrant install uses "vagrant-hostsupdater" to write to the /etc/hosts file, the up/halt/reload processes will persistently ask for sudo password information. This can cause problems when trying to run vagrant from programs like PHPStorm, where it might not typically run askpass processes.
+
+To bypass this, you will need to make modifications to your sudoers file to give Vagrant permission to write to the hosts file. You can do this by following these steps:
+
+1. From the command line, edit the sudoers file by running `sudo visudo`
+2. Scroll to the bottom of the file and type `i` to enter "insert mode"
+3. Insert the following code:
+
+        # vagrant-hostsupdater
+        Cmnd_Alias VAGRANT_HOSTS_ADD = /bin/sh -c echo "*" >> /etc/hosts
+        Cmnd_Alias VAGRANT_HOSTS_REMOVE = /usr/bin/sed -i -e /*/ d /etc/hosts
+        %admin ALL=(root) NOPASSWD: VAGRANT_HOSTS_ADD, VAGRANT_HOSTS_REMOVE
+        # end vagrant-hostsupdater
+        
+        # vagrant-nfs
+        Cmnd_Alias VAGRANT_EXPORTS_ADD = /usr/bin/tee -a /etc/exports
+        Cmnd_Alias VAGRANT_NFSD = /sbin/nfsd restart
+        Cmnd_Alias VAGRANT_EXPORTS_REMOVE = /usr/bin/sed -E -e /*/ d -ibak /etc/exports
+        %admin ALL=(root) NOPASSWD: VAGRANT_EXPORTS_ADD, VAGRANT_NFSD, VAGRANT_EXPORTS_REMOVE
+        # end vagrant-nfs
+    
+4. Type `:wq` to save the changes and exit the sudoers file
+5. Restart your terminal sessions to apply the changes (in some cases, rebooting the computer works best.)
+6. You should now be able to run `vagrant up` without the password requirement.
+
+**Note** - The above code should work as expected from most MacOS environments. Other environments may require updates to the system paths (particularly the path to sed). Use "which" from the command line to determine your system path (e.g., `which sed`).  
+
+For more information, review the "Helpful modifications to /etc/sudoers" section of [this post](http://www.jeffgeerling.com/blogs/jeff-geerling/better-vagrant-development-workflow) from Jeff Geerling's blog. 
 
 
 ## More on Drupal VM
