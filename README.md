@@ -1,6 +1,6 @@
 Installation Profile Instructions
 =================================
-###### **Updated:** _2016-06-27_
+###### **Updated:** _2016-06-28_
 
 
 ## Requirements
@@ -26,11 +26,11 @@ The basic tools needed to install this box are:
 
 5. Install the following Vagrant plugins: `vagrant plugin install vagrant-auto_network vagrant-hostsupdater vagrant-share vagrant-vbguest vagrant-triggers`
 
-6. If you have a recent database backup, place it in the `dvm/site_backups/db` folder and it will update during the post-provision process. For instruction on how to get a recent copy of the Production database, see the section on "[Database Updating](#DB_Updates)" below.
+6. If you'd like Vagrant to run without requiring your password, follow the "Passwordless sudo" instructions on the [hostupdater Github Page](https://github.com/cogitatio/vagrant-hostsupdater#passwordless-sudo). **Helpful Tip:** Pay close attention to the portion about "sed" location.
 
-7. Bring up Vagrant (This might take a while!): `vagrant up` 
+7. If you have a recent database backup, place it in the `dvm/site_backups/db` folder and it will update during the post-provision process. For instruction on how to get a recent copy of the Production database, see the section on "[Database Updating](#DB_Updates)" below.
 
-8. Install your public key: `cat ~/.ssh/id_rsa.pub | ssh vagrant@IP_SET_BY_VAGRANT 'cat >> .ssh/authorized_keys'` The default password for user "vagrant" is "vagrant."
+8. Bring up Vagrant (This might take a while!): `vagrant up` 
 
 9. Once complete, Vagrant will open the dashboard in your default browser - [http://dashboard.%vagrant_hostname%](http://dashboard.%vagrant_hostname%). Your site should now be available at [https://%vagrant_hostname%](https://%vagrant_hostname%)
 
@@ -44,9 +44,7 @@ If vagrant throws an error on `vagrant up`:
 If you get an "**ECDSA host key**" error, check your "known_host" file `sudo vi/nano/your_pref_editor ~/.ssh/known_hosts` for instances of "%vagrant_hostname%" - most likely at the bottom of the file. Remove the line and save the file. Then, run `vagrant up` again.
 
 
-## Initial Database and File updates
-
-### Drush Aliases
+## Drush Aliases
 
 The site install should have added Drush aliases for the available environments. They are as follows: 
 
@@ -57,13 +55,21 @@ The site install should have added Drush aliases for the available environments.
 
 To use these, cd into the (core Drupal file): `cd %drupal_core_path%` (or from anywhere if Drush is installed globally on your machine.) and run your Drush commands, e.g., `drush @%project_name%.local status` .
 
+
+### Installing authorized ssh keys
+
+To install your public key: `cat ~/.ssh/id_rsa.pub | ssh vagrant@IP_SET_BY_VAGRANT 'cat >> .ssh/authorized_keys'` For the local alias, the default password for user "vagrant" is "vagrant." All other aliases should use your normal login info following the example given. 
+
+
+## Initial Database and File updates
+
 ### Image and file syncing
 
 Images and other files are updated automatically on your local through the [Stage File Proxy module](https://www.drupal.org/project/stage_file_proxy).
 
 ### <a name="DB_Updates"></a> Database updating
 
-Implementing a recent version of Production database is now a part of the initialization process of the Vagrant build. If your site launches without a database install or you wish to update your local with what is currently on production, follow the 
+Implementing a recent version of Production database is now a part of the initialization process of the Vagrant build. If your site launches without a database install or you wish to update your local with what is currently on production, follow the instructions below.
 
 To update your data to what is currently available on Production, download a recent backup by logging into the %project_name% Prod site and go to [Backup and Migrate](https://%production_url%/admin/config/system/backup_migrate).
 From here, you can either generate a new backup or download a recent file from the "Saved backups" tab. (You will need Admin access to %project_name% in order to do this.)
