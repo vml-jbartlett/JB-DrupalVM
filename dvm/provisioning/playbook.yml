@@ -15,6 +15,7 @@
     - include_vars: "{{ item }}"
       with_fileglob:
         - "{{ config_dir }}/config.yml"
+        - "{{ config_dir }}/site.config.yml"
         - "{{ config_dir }}/local.config.yml"
 
     - include: tasks/init-debian.yml

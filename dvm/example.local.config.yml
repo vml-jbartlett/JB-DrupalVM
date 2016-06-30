@@ -1,6 +1,5 @@
 ---
 # User-specific configuration file
 
-
 # Update your SSH username
 ssh_username: "ssh_user"
