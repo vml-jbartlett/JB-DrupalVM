@@ -49,7 +49,7 @@ env_aliases:
 #    alias_host: "{{ alias.prod.host }}"
 #    alias_user: "{{ ssh_username }}"
 #    alias_files: "{{ alias.files_path }}"
-#    alias_links: "{{ alias.prob.links }}"
+#    alias_links: "{{ alias.prod.links }}"
 
 # Allow Drupal VM to be accessed via a public network interface on your host.
 # Vagrant boxes are insecure by default, so be careful. You've been warned!
