@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/geerlingguy/drupal-vm.svg?branch=master)](https://travis-ci.org/geerlingguy/drupal-vm) [![Documentation Status](https://readthedocs.org/projects/drupal-vm/badge/?version=latest)](http://docs.drupalvm.com) [![Packagist](https://img.shields.io/packagist/v/geerlingguy/drupal-vm.svg)](https://packagist.org/packages/geerlingguy/drupal-vm)
 
-[Drupal VM](http://www.drupalvm.com/) is A VM for local Drupal development, built with Vagrant + Ansible.
+[Drupal VM](https://www.drupalvm.com/) is A VM for local Drupal development, built with Vagrant + Ansible.
 
 This project aims to make spinning up a simple local Drupal test/development environment incredibly quick and easy, and to introduce new developers to the wonderful world of Drupal development on local virtual machines (instead of crufty old MAMP/WAMP-based development).
 
@@ -17,6 +17,7 @@ It will install the following on an Ubuntu 16.04 (by default) linux VM:
     - Drupal Console
     - Varnish 4.x (configurable)
     - Apache Solr 4.10.x (configurable)
+    - Elasticsearch
     - Node.js 0.12 (configurable)
     - Selenium, for testing your sites via Behat
     - Ruby
@@ -48,8 +49,8 @@ There are a couple places where you can customize the VM for your needs:
 If you want to switch from Drupal 8 (default) to Drupal 7 on the initial install, do the following:
 
   1. Switch to using a [Drush Make file](http://docs.drupalvm.com/en/latest/deployment/drush-make/).
-  1. Update the Drupal `version` and `core` inside the `drupal.make.yml` file.
-  2. Update `drupal_major_version` inside `config.yml`.
+  1. Update the Drupal `version` and `core` inside your `drupal.make.yml` file.
+  2. Set `drupal_major_version: 7` inside `config.yml`.
 
 ## Quick Start Guide
 

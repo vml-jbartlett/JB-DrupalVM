@@ -149,7 +149,7 @@ configure_drush_aliases: true
 # View the geerlingguy.apache Ansible Role README for more options.
 apache_vhosts:
   - servername: "{{ drupal_domain }}"
-    # serveralias: "www.{{ drupal_domain }}"
+#    serveralias: "www.{{ drupal_domain }}"
     documentroot: "{{ drupal_core_path }}"
     extra_parameters: |
           ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ drupal_core_path }}"
@@ -159,10 +159,10 @@ apache_vhosts:
     extra_parameters: |
           ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ adminer_install_dir }}"
 
-  # - servername: "xhprof.{{ vagrant_hostname }}"
-  #   documentroot: "{{ php_xhprof_html_dir }}"
-  #   extra_parameters: |
-  #         ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ php_xhprof_html_dir }}"
+#  - servername: "xhprof.{{ vagrant_hostname }}"
+#    documentroot: "{{ php_xhprof_html_dir }}"
+#    extra_parameters: |
+#          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ php_xhprof_html_dir }}"
 
   - servername: "pimpmylog.{{ vagrant_hostname }}"
     documentroot: "{{ pimpmylog_install_dir }}"
@@ -178,7 +178,7 @@ apache_vhosts:
 
 apache_vhosts_ssl:
   - servername: "{{ drupal_domain }}"
-    # serveralias: "www.{{ drupal_domain }}"
+#    serveralias: "www.{{ drupal_domain }}"
     documentroot: "{{ drupal_core_path }}"
     certificate_file: "/var/keys/{{ vagrant_machine_name }}.crt"
     certificate_key_file: "/var/keys/{{ vagrant_machine_name }}.key"
@@ -205,9 +205,9 @@ nginx_hosts:
     root: "{{ adminer_install_dir }}"
     is_php: true
 
-  # - server_name: "xhprof.{{ vagrant_hostname }}"
-  #   root: "{{ php_xhprof_html_dir }}"
-  #   is_php: true
+#  - server_name: "xhprof.{{ vagrant_hostname }}"
+#    root: "{{ php_xhprof_html_dir }}"
+#    is_php: true
 
   - server_name: "pimpmylog.{{ vagrant_hostname }}"
     root: "{{ pimpmylog_install_dir }}"
@@ -238,6 +238,7 @@ installed_extras:
   - adminer
   # - blackfire
   # - drupalconsole
+  # - elasticsearch
   - mailhog
   - memcached
   # - newrelic
@@ -273,6 +274,7 @@ firewall_allowed_tcp_ports:
   - "8080"
   - "8443"
   - "8983"
+  - "9200"
 firewall_log_dropped_packets: false
 
 # PHP Configuration. Currently-supported versions: 5.6, 7.0.
@@ -309,7 +311,7 @@ php_memory_limit: "1G"
 php_display_errors: "On"
 php_display_startup_errors: "On"
 php_realpath_cache_size: "2048k"
-php_sendmail_path: "/usr/sbin/sendmail -t -i"
+php_sendmail_path: "/opt/mailhog/mhsendmail"
 php_opcache_enabled_in_ini: true
 php_opcache_memory_consumption: "2048"
 php_opcache_max_accelerated_files: 4096
