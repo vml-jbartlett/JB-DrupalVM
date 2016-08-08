@@ -105,14 +105,11 @@
       <table class="table">
         {#<thead>#}
           {#<tr>#}
-            {#<th>Environment</th>#}
             {#<th>Hostname</th>#}
             {#<th>Document Root</th>#}
             {#{% if configure_drush_aliases -%}#}
               {#<th>Drush alias*</th>#}
             {#{%- endif %}#}
-            {#<th>Links</th>#}
-          {#</tr>#}
         {#</thead>#}
         <tbody>
           {% if drupalvm_webserver == 'apache' -%}
