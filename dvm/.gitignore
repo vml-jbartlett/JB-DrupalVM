@@ -15,8 +15,6 @@ examples/prod/bootstrap/vars.yml
 #scripts/
 drupal/
 
-provisioning/roles
-
 site_backups/db/*.mysql.gz
 site_backups/files/*
 
