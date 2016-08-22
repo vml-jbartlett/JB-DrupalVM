@@ -21,6 +21,11 @@
         max-width: 100%;
       }
     </style>
+    <script>
+      $(document).ready(function() {
+        $( 'a' ).attr( 'target','_blank' );
+      });
+    </script>
   </head>
   <body>
     {# Sets vagrant IP if equals 0.0.0.0 #}
@@ -105,11 +110,14 @@
       <table class="table">
         {#<thead>#}
           {#<tr>#}
+            {#<th>Environment</th>#}
             {#<th>Hostname</th>#}
             {#<th>Document Root</th>#}
             {#{% if configure_drush_aliases -%}#}
               {#<th>Drush alias*</th>#}
             {#{%- endif %}#}
+            {#<th>Links</th>#}
+          {#</tr>#}
         {#</thead>#}
         <tbody>
           {% if drupalvm_webserver == 'apache' -%}
@@ -140,9 +148,9 @@
           {%- if servername() != "/{{ adminer_install_filename }}" -%}
             <tr>
               <th>Adminer</th>
-              <td><a href="http://{{ servername() }}" target="_blank">{{ servername() }}</a></td>
+              <td><a href="http://{{ servername() }}">{{ servername() }}</a></td>
               <td class="text-right">
-                <a href="http://{{ servername() }}" class="btn btn-success btn-xs" role="button" target="_blank">Open</a>
+                <a href="http://{{ servername() }}" class="btn btn-success btn-xs" role="button">Open</a>
                 <a href="http://docs.drupalvm.com/en/latest/extras/mysql/#connect-using-adminer" target="_blank" class="btn btn-info btn-xs" role="button">Documentation</a>
               </td>
             </tr>
@@ -153,9 +161,9 @@
           {%- if servername() != ":8025" -%}
             <tr>
               <th>MailHog</th>
-              <td><a href="http://{{ servername() }}" target="_blank">{{ servername() }}</a></td>
+              <td><a href="http://{{ servername() }}">{{ servername() }}</a></td>
               <td class="text-right">
-                <a href="http://{{ servername() }}" class="btn btn-success btn-xs" role="button" target="_blank">Open</a>
+                <a href="http://{{ servername() }}" class="btn btn-success btn-xs" role="button">Open</a>
                 <a href="http://docs.drupalvm.com/en/latest/extras/mailhog/" target="_blank" class="btn btn-info btn-xs" role="button">Documentation</a>
               </td>
             </tr>
@@ -166,9 +174,9 @@
           {%- if servername() -%}
             <tr>
               <th>PimpMyLog</th>
-              <td><a href="http://{{ servername() }}" target="_blank">{{ servername() }}</a></td>
+              <td><a href="http://{{ servername() }}">{{ servername() }}</a></td>
               <td class="text-right">
-                <a href="http://{{ servername() }}" class="btn btn-success btn-xs" role="button" target="_blank">Open</a>
+                <a href="http://{{ servername() }}" class="btn btn-success btn-xs" role="button">Open</a>
                 <a href="http://docs.drupalvm.com/en/latest/extras/pimpmylog/" target="_blank" class="btn btn-info btn-xs" role="button">Documentation</a>
               </td>
             </tr>
@@ -178,9 +186,9 @@
           {% macro servername() %}{{ vagrant_hostname }}:{{ solr_port }}/solr/{% endmacro %}
           <tr>
             <th>Solr</th>
-            <td><a href="http://{{ servername() }}" target="_blank">{{ servername() }}</a></td>
+            <td><a href="http://{{ servername() }}">{{ servername() }}</a></td>
             <td class="text-right">
-              <a href="http://{{ servername() }}" class="btn btn-success btn-xs" role="button" target="_blank">Open</a>
+              <a href="http://{{ servername() }}" class="btn btn-success btn-xs" role="button">Open</a>
               <a href="http://docs.drupalvm.com/en/latest/extras/solr/" target="_blank" class="btn btn-info btn-xs" role="button">Documentation</a>
             </td>
           </tr>
@@ -190,9 +198,9 @@
           {%- if servername() -%}
             <tr>
               <th>XHProf</th>
-              <td><a href="http://{{ servername() }}" target="_blank">{{ servername() }}</a></td>
+              <td><a href="http://{{ servername() }}">{{ servername() }}</a></td>
               <td class="text-right">
-                <a href="http://{{ servername() }}" class="btn btn-success btn-xs" role="button" target="_blank">Open</a>
+                <a href="http://{{ servername() }}" class="btn btn-success btn-xs" role="button">Open</a>
                 <a href="http://docs.drupalvm.com/en/latest/extras/xhprof/" target="_blank" class="btn btn-info btn-xs" role="button">Documentation</a>
               </td>
             </tr>
@@ -219,7 +227,7 @@
           <th>PHP-FPM enabled</th>
           <td><code>{{ 'yes' if php_enable_php_fpm else 'no' }}</code></td>
         </tr>
-        <tr><td colspan=2><small><a href="/server-info.php" target="_blank">View more details in the server's phpinfo() report</a>.</small></td></tr>
+        <tr><td colspan=2><small><a href="/server-info.php">View more details in the server's phpinfo() report</a>.</small></td></tr>
       </table>
     {%- endmacro -%}
 
@@ -272,7 +280,7 @@
               <td><code>{{ database.name }}</code></td>
               {% if 'adminer' in installed_extras -%}
               <td>
-                <a href="http://{{ getServernameFromDocroot(adminer_install_dir) }}/{{ adminer_install_filename }}?username={{ mysql_root_username }}&db={{ database.name }}" class="btn btn-success btn-xs" role="button" target="_blank">Adminer</a>
+                <a href="http://{{ getServernameFromDocroot(adminer_install_dir) }}/{{ adminer_install_filename }}?username={{ mysql_root_username }}&db={{ database.name }}" class="btn btn-success btn-xs" role="button">Adminer</a>
               </td>
               {%- endif %}
             </tr>
@@ -312,10 +320,10 @@
                     <img class="dvm-logo" src="{{ dashboard_logo }}" alt="{{ project_name }} Drupal VM" title="Welcome to {{ project_name }} Drupal VM">
                   </a>
                 {%- else -%}
-                  <a href="http://www.drupalvm.com/" target="_blank"><img src="http://docs.drupalvm.com/en/latest/images/drupal-vm-logo.png" alt="Drupal VM" title="Welcome to Drupal VM"></a>
+                  <a href="https://www.drupalvm.com/"><img src="http://docs.drupalvm.com/en/latest/images/drupal-vm-logo.png" alt="Drupal VM" title="Welcome to Drupal VM"></a>
                 {%- endif -%}
-                <p><a href="https://github.com/geerlingguy/drupal-vm" target="_blank">Drupal VM</a> is a VM for local Drupal development, built with Vagrant + Ansible.</p>
-                <p><a class="btn btn-primary btn-lg" href="http://docs.drupalvm.com/en/latest/" role="button" target="_blank">Read the documentation</a></p>
+                <p><a href="https://github.com/geerlingguy/drupal-vm">Drupal VM</a> is a VM for local Drupal development, built with Vagrant + Ansible.</p>
+                <p><a class="btn btn-primary btn-lg" href="http://docs.drupalvm.com/en/latest/" role="button">Read the documentation</a></p>
               </div>
 
               <div class="col-md-5">
@@ -344,7 +352,6 @@
 
       <div class="row">
         <div class="col-md-7">
-
           <section class="panel panel-default">
             <div class="panel-heading">Development tools</div>
             <div class="panel-body">
