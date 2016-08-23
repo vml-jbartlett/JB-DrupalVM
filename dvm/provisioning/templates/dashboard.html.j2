@@ -2,7 +2,7 @@
   <head>
     <title>{{ drupal_site_name }} DVM</title>
     <meta charset="utf-8">
-    <link rel="shortcut icon" href="//cdn.rawgit.com/geerlingguy/drupalvm.github.io/master/favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="shortcut icon" href="{{ dashboard.favicon }}" type="image/vnd.microsoft.icon" />
     <style>
       .section-host {
         font-family: monospace;
@@ -318,9 +318,9 @@
           <section class="jumbotron">
             <div class="row">
               <div class="col-md-7 text-center">
-                {%- if dashboard_logo -%}
+                {%- if dashboard.logo -%}
                   <a href="{{ vagrant_hostname }}">
-                    <img class="dvm-logo" src="{{ dashboard_logo }}" alt="{{ project_name }} Drupal VM" title="Welcome to {{ project_name }} Drupal VM">
+                    <img class="dvm-logo" src="{{ dashboard.logo }}" alt="{{ project_name }} Drupal VM" title="Welcome to {{ project_name }} Drupal VM">
                   </a>
                 {%- else -%}
                   <a href="https://www.drupalvm.com/"><img src="http://docs.drupalvm.com/en/latest/images/drupal-vm-logo.png" alt="Drupal VM" title="Welcome to Drupal VM"></a>

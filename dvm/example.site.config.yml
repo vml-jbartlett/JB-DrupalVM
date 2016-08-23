@@ -6,12 +6,14 @@ project_machine_name: project_name
 project_url: project-url.com
 
 # Custom Logo for Dashboard
-dashboard_logo: "images/dvm-logo-{{ project_machine_name }}.png"
+dashboard:
+  logo: "images/dvm-logo-{{ project_machine_name }}.png"
+  favicon: "images/favicon.ico"
 
 # Alias Info
 
 alias:
-  root_path: "/var/www/vhosts/vml/{{ project_url }}/docroot"
+  root_path: "/var/www/vhosts/vml/{{ project_url }}/htdocs"
   files_path: "/sites/default/files"
   local:
     name: "local"
@@ -59,9 +61,10 @@ stash:
   path: "https://stash-server.com/projects/{{ ssh_username }}/repos/{{ project_url }}/browse"
 
 # Jira
+jira_project_alias: "JIRA"
 jira:
   title: "Jira Board"
-  path: "https://jira-server.com/secure/RapidBoard.jspa?rapidView=NUMBER"
+  path: "https://jira-server.com/projects/{{ jira_project_alias }}"
 
 # Production
 prod_site:
