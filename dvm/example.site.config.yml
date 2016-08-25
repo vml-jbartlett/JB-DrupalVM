@@ -5,45 +5,81 @@ project_name: Project Name
 project_machine_name: project_name
 project_url: project-url.com
 
-# Custom Logo for Dashboard
-dashboard:
-  logo: "images/dvm-logo-{{ project_machine_name }}.png"
-  favicon: "images/favicon.ico"
+# Setup for alias files
+env_aliases:
+  - alias_name: "{{ alias.local.name }}"
+    alias_uri: "{{ vagrant_hostname }}"
+    alias_root: "{{ drupal_core_path }}"
+    alias_host: "{{ vagrant_hostname }}"
+    alias_user: "{{ vagrant_user }}"
+    alias_files: "{{ alias.files_path }}"
+    alias_ssh: "' -o PasswordAuthentication=no -i ' . drush_server_home() . '/.vagrant.d/insecure_private_key'"
+    alias_links: "{{ alias.local.links }}"
+
+  - alias_name: "{{ alias.dev.name }}"
+    alias_uri: "{{ alias.dev.uri }}"
+    alias_root: "{{ alias.root_path }}"
+    alias_host: "{{ alias.dev.host }}"
+    alias_user: "{{ ssh_username }}"
+    alias_files: "{{ alias.files_path }}"
+    alias_links: "{{ alias.dev.links }}"
+
+  - alias_name: "{{ alias.stage.name }}"
+    alias_uri: "{{ alias.stage.uri }}"
+    alias_root: "{{ alias.root_path }}"
+    alias_host: "{{ alias.stage.host }}"
+    alias_user: "{{ ssh_username }}"
+    alias_files: "{{ alias.files_path }}"
+    alias_links: "{{ alias.stage.links }}"
+
+  - alias_name: "{{ alias.prod.name }}"
+    alias_uri: "{{ alias.prod.uri }}"
+    alias_root: "{{ alias.root_path }}"
+    alias_host: "{{ alias.prod.host }}"
+    alias_user: "{{ ssh_username }}"
+    alias_files: "{{ alias.files_path }}"
+    alias_links: "{{ alias.prod.links }}"
 
 # Alias Info
-
 alias:
   root_path: "/var/www/vhosts/vml/{{ project_url }}/htdocs"
   files_path: "/sites/default/files"
   local:
     name: "local"
-    links: []
-#      - "{{ stash }}"
-#      - "{{ jira }}"
-#      - "{{ prod_site }}"
-#  dev:
-#    name: "dev"
-#    uri: "dev.{{ project_machine_name }}.com"
-#    host: "dev.proxy"
-#    links:
-#      - "{{ jenkins.dev }}"
-#  stage:
-#    name: "stage"
-#    uri: "stage.{{ project_machine_name }}.com"
-#    host: "stage.proxy"
-#    links:
-#      - "{{ jenkins.stage }}"
-#  prod:
-#    name: "prod"
-#    uri: "{{ project_url }}"
-#    host: "prod.proxy"
-#    links:
-#      - "{{ jenkins.prod }}"
+    links:
+      - "{{ stash }}"
+      - "{{ jira }}"
+      - "{{ prod_site }}"
+  dev:
+    name: "dev"
+    uri: "{{ project_machine_name }}.vmldev.com"
+    host: "devproxy.vml.lan"
+    links:
+      - "{{ jenkins.dev }}"
+  stage:
+    name: "stage"
+    uri: "{{ project_machine_name }}.vmlstage.com"
+    host: "stageproxy.vml.lan"
+    links:
+      - "{{ jenkins.stage }}"
+  prod:
+    name: "prod"
+    uri: "{{ project_url }}"
+    host: "prodproxy.vml.lan"
+    links:
+      - "{{ jenkins.prod }}"
+
+
+# Custom Logo for Dashboard
+dashboard:
+  logo: "images/dvm-logo-{{ project_machine_name }}.png"
+  favicon: "images/favicon.ico"
+
 
 # Project Source Links
 
 # Jenkins
-jenkins_base_url: "https://jenkins-server.com/job/{{ project_url }}"
+jenkins_base_url: "https://jenkins.vmlapps.com/job/{{ project_url }}"
 jenkins:
   dev:
     title: "Jenkins"
@@ -58,13 +94,13 @@ jenkins:
 # Stash
 stash:
   title: "Stash Repo"
-  path: "https://stash-server.com/projects/{{ ssh_username }}/repos/{{ project_url }}/browse"
+  path: "https://stash.vmlapps.com/projects/VML/repos/{{ project_url }}/browse"
 
 # Jira
 jira_project_alias: "JIRA"
 jira:
   title: "Jira Board"
-  path: "https://jira-server.com/projects/{{ jira_project_alias }}"
+  path: "https://jira.vmlapps.com/projects/{{ jira_project_alias }}"
 
 # Production
 prod_site:

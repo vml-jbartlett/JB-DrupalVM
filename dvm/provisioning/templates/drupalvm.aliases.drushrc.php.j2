@@ -16,15 +16,14 @@ $aliases['{{ item.alias_name }}'] = array(
     'remote-host' => '{{ item.alias_host }}',
     'remote-user' => '{{ item.alias_user }}',
     {% if item.alias_ssh is defined -%}
-
-    'ssh-options' => '-o PasswordAuthentication=no -i ' . drush_server_home() . '/.vagrant.d/insecure_private_key',
+    'ssh-options' => {{ item.alias_ssh }},
     {% endif %}
 'path-aliases' => array(
         '%dump-dir' => '{{ item.alias_root }}{{ item.alias_files }}/drush.dbdumps',
         '%files' => '{{ item.alias_root }}{{ item.alias_files }}',
     ),
 );
-{% endfor -%}
+{% endfor %}
 
 {% endif -%}
 {% endmacro %}

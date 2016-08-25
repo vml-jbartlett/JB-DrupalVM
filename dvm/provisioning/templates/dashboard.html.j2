@@ -21,10 +21,11 @@
         max-width: 100%;
       }
     </style>
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
     <script>
       $(document).ready(function() {
         var attr = $('a').attr('target');
-        if (typeof attr !== typeof undefined && attr !== false) {
+        if (typeof attr !== "_blank") {
           $( 'a' ).attr( 'target','_blank' );
         }
       });

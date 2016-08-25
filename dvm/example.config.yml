@@ -10,46 +10,9 @@ vagrant_synced_folder_default_type: nfs
 vagrant_hostname: "local.{{ project_url }}"
 vagrant_machine_name: "{{ project_machine_name }}"
 vagrant_ip: 0.0.0.0 #Set a default or leave at 0 for autoselection
-vagrant_autoip: "{{ ansible_all_ipv4_addresses[1] }}"
 
-vagrant_local_path: .
 config_dir: dvm
-
-# Setup for alias files
-
-env_aliases:
-  - alias_name: "{{ alias.local.name }}"
-    alias_uri: "{{ vagrant_hostname }}"
-    alias_root: "{{ drupal_core_path }}"
-    alias_host: "{{ vagrant_hostname }}"
-    alias_user: "{{ vagrant_user }}"
-    alias_files: "{{ alias.files_path }}"
-    alias_ssh: true
-    alias_links: "{{ alias.local.links }}"
-
-#  - alias_name: "{{ alias.dev.name }}"
-#    alias_uri: "{{ alias.dev.uri }}"
-#    alias_root: "{{ alias.root_path }}"
-#    alias_host: "{{ alias.dev.host }}"
-#    alias_user: "{{ ssh_username }}"
-#    alias_files: "{{ alias.files_path }}"
-#    alias_links: "{{ alias.dev.links }}"
-#
-#  - alias_name: "{{ alias.stage.name }}"
-#    alias_uri: "{{ alias.stage.uri }}"
-#    alias_root: "{{ alias.root_path }}"
-#    alias_host: "{{ alias.stage.host }}"
-#    alias_user: "{{ ssh_username }}"
-#    alias_files: "{{ alias.files_path }}"
-#    alias_links: "{{ alias.stage.links }}"
-#
-#  - alias_name: "{{ alias.prod.name }}"
-#    alias_uri: "{{ alias.prod.uri }}"
-#    alias_root: "{{ alias.root_path }}"
-#    alias_host: "{{ alias.prod.host }}"
-#    alias_user: "{{ ssh_username }}"
-#    alias_files: "{{ alias.files_path }}"
-#    alias_links: "{{ alias.prod.links }}"
+project_dir: "/var/www/{{ project_url }}"
 
 # Allow Drupal VM to be accessed via a public network interface on your host.
 # Vagrant boxes are insecure by default, so be careful. You've been warned!
@@ -63,22 +26,22 @@ vagrant_synced_folders:
   # The first synced folder will be used for the default Drupal installation, if
   # any of the build_* settings are 'true'. By default the folder is set to
   # the drupal-vm folder.
-  - local_path: "{{ vagrant_local_path }}"
-    destination: "/var/www/{{ project_url }}"
+  - local_path: .
+    destination: "{{ project_dir }}"
     type: nfs
     create: true
 
-  - local_path: "{{ vagrant_local_path }}/{{ config_dir }}/site_backups"
+  - local_path: "{{ config_dir }}/site_backups"
     destination: /var/site_backups
     type: nfs
     create: true
 
-  - local_path: "{{ vagrant_local_path }}/{{ config_dir }}/scripts"
+  - local_path: "{{ config_dir }}/scripts"
     destination: /var/scripts
     type: nfs
     create: true
 
-  - local_path: "{{ vagrant_local_path }}/{{ config_dir }}/images/dashboard"
+  - local_path: "{{ config_dir }}/images/dashboard"
     destination: "{{ dashboard_install_dir }}/images"
     type: nfs
     create: true
@@ -100,7 +63,7 @@ drush_make_options: "--no-gitinfofile"
 # composer based site deployment strategy.
 build_composer: false
 drupal_composer_path: "{{ config_dir }}/drupal.composer.json"
-drupal_composer_install_dir: "/var/www/drupalvm/drupal"
+drupal_composer_install_dir: "{{ project_dir }}/drupal"
 drupal_composer_dependencies:
   - "drupal/devel:8.*"
 
@@ -115,7 +78,7 @@ drupal_composer_project_options: "--prefer-dist --stability dev --no-interaction
 install_site: false
 
 # Required Drupal settings.
-drupal_core_path: "/var/www/{{ project_url }}/htdocs"
+drupal_core_path: "{{ project_dir }}/htdocs"
 drupal_mysql_user: drupal
 drupal_mysql_password: drupal
 drupal_mysql_database: drupal
@@ -148,7 +111,6 @@ configure_drush_aliases: true
 # View the geerlingguy.apache Ansible Role README for more options.
 apache_vhosts:
   - servername: "{{ drupal_domain }}"
-#    serveralias: "www.{{ drupal_domain }}"
     documentroot: "{{ drupal_core_path }}"
     extra_parameters: |
           ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ drupal_core_path }}"
@@ -158,18 +120,12 @@ apache_vhosts:
     extra_parameters: |
           ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ adminer_install_dir }}"
 
-#  - servername: "xhprof.{{ vagrant_hostname }}"
-#    documentroot: "{{ php_xhprof_html_dir }}"
-#    extra_parameters: |
-#          ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ php_xhprof_html_dir }}"
-
   - servername: "pimpmylog.{{ vagrant_hostname }}"
     documentroot: "{{ pimpmylog_install_dir }}"
     extra_parameters: |
           ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ pimpmylog_install_dir }}"
 
-  - servername: "{{ vagrant_ip }}"
-    serveralias: "dashboard.{{ vagrant_hostname }}"
+  - servername: "dashboard.{{ vagrant_hostname }}"
     documentroot: "{{ dashboard_install_dir }}"
     extra_parameters: |
           ProxyPassMatch ^/(.*\.php(/.*)?)$ "fcgi://127.0.0.1:9000{{ dashboard_install_dir }}"
@@ -177,7 +133,6 @@ apache_vhosts:
 
 apache_vhosts_ssl:
   - servername: "{{ drupal_domain }}"
-#    serveralias: "www.{{ drupal_domain }}"
     documentroot: "{{ drupal_core_path }}"
     certificate_file: "/var/keys/{{ vagrant_machine_name }}.crt"
     certificate_key_file: "/var/keys/{{ vagrant_machine_name }}.key"
@@ -203,10 +158,6 @@ nginx_hosts:
   - server_name: "adminer.{{ vagrant_hostname }}"
     root: "{{ adminer_install_dir }}"
     is_php: true
-
-#  - server_name: "xhprof.{{ vagrant_hostname }}"
-#    root: "{{ php_xhprof_html_dir }}"
-#    is_php: true
 
   - server_name: "pimpmylog.{{ vagrant_hostname }}"
     root: "{{ pimpmylog_install_dir }}"

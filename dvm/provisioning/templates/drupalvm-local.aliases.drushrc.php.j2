@@ -16,13 +16,16 @@ $aliases['{{ item.alias_name }}'] = array(
     {% if item.alias_uri != vagrant_hostname %}
     'remote-host' => '{{ item.alias_host }}',
     'remote-user' => '{{ item.alias_user }}',
-    'path-aliases' => array(
+    {% if item.alias_ssh is defined -%}
+    'ssh-options' => {{ item.alias_ssh }},
+    {% endif %}
+'path-aliases' => array(
         '%dump-dir' => '{{ item.alias_root }}{{ item.alias_files }}/drush.dbdumps',
         '%files' => '{{ item.alias_root }}{{ item.alias_files }}',
     ),
     {% endif %}
 );
-{% endfor -%}
+{% endfor %}
 
 {% endif -%}
 {% endmacro %}
