@@ -4,10 +4,10 @@
 PROJECT_NAME="project_name"
 PROJECT_LOCAL="local.$PROJECT_NAME.com"
 
-COUNTRY="country"
-STATE="state"
-LOCALE="city"
-ORG_NAME="org"
+COUNTRY="US"
+STATE="Missouri"
+LOCALE="Kansas City"
+ORG_NAME="VML"
 COMMON_NAME="$PROJECT_LOCAL"
 
 # Define a timestamp function
